@@ -4,7 +4,7 @@
              x:Class="PuntoVenta.MainPage"
              Shell.NavBarIsVisible="False"
              NavigationPage.HasNavigationBar="False">
-<!-- Mensaje para ver si se mando a git -->
+    
     <Grid RowDefinitions=".3*,.7*">
         <Image Aspect="AspectFill"
                Source="#" />

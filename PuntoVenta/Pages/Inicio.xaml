@@ -11,21 +11,23 @@
         <!-- Primera parte del grid principal -->
         <Grid BackgroundColor="#2196f3">
             <ContentView HorizontalOptions="Center">
-                <Label Text="Bienvenido" TextColor="White" FontSize="50" />
+                <Label Text="Bienvenido" TextColor="White" FontSize="50" FontFamily="bold" />
             </ContentView>
         </Grid>
 
         <!-- Segunda parte del grid principal -->
         <Grid Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center">
             <RoundRectangle Margin="0,-30"
-                CornerRadius="30,30,0,0"
-                Fill="White" />
+                            CornerRadius="30,30,0,0"
+                            Fill="White" />
 
-            <!-- Contenido para PC -->
+            <!-- Contenido para pc -->
             <OnPlatform x:TypeArguments="ContentView">
                 <On Platform="WinUI, MacCatalyst">
                     <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                         <ContentView.Content>
+                            
+                            <!-- Grid secundario para contenido de pc -->
                             <Grid x:Name="MainGrid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width=".25*" />
@@ -81,37 +83,42 @@
                     <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                         <ContentView.Content>
                             <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Center" Spacing="40">
-                                <RoundRectangle BackgroundColor="#edebf6"
-                                    CornerRadius="10"
-                                    HeightRequest="120"
-                                    WidthRequest="120"
-                                    HorizontalOptions="Center" 
-                                    VerticalOptions="Center"/>
+                                
                                 <!-- Primer elemento -->
+                                <ContentView Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Button HeightRequest="120" WidthRequest="120" Clicked="OnVentasClicked" BackgroundColor="#edebf6">
+                                        <Button.ImageSource>
+                                            <FontImageSource FontFamily="awesomeSolid" Glyph="&#xf07a;" Size="80" Color="#2196f3" />
+                                        </Button.ImageSource>
+                                    </Button>
+                                </ContentView>
 
-                                <RoundRectangle BackgroundColor="#edebf6"
-                                    CornerRadius="10"
-                                    HeightRequest="120"
-                                    WidthRequest="120" 
-                                    HorizontalOptions="Center" 
-                                    VerticalOptions="Center" />
                                 <!-- Segundo elemento -->
+                                <ContentView Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Button HeightRequest="120" WidthRequest="120" Clicked="OnInventarioClicked" BackgroundColor="#edebf6">
+                                        <Button.ImageSource>
+                                            <FontImageSource FontFamily="awesomeSolid" Glyph="&#xf1b3;" Size="80" Color="#2196f3" />
+                                        </Button.ImageSource>
+                                    </Button>
+                                </ContentView>
 
-                                <RoundRectangle BackgroundColor="#edebf6"
-                                    CornerRadius="10"
-                                    HeightRequest="120"
-                                    WidthRequest="120" 
-                                    HorizontalOptions="Center" 
-                                    VerticalOptions="Center" />
                                 <!-- Tercer elemento -->
+                                <ContentView Grid.Column="2" HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Button HeightRequest="120" WidthRequest="120" Clicked="OnClientesClicked" BackgroundColor="#edebf6">
+                                        <Button.ImageSource>
+                                            <FontImageSource FontFamily="awesomeSolid" Glyph="&#xf007;" Size="80" Color="#2196f3" />
+                                        </Button.ImageSource>
+                                    </Button>
+                                </ContentView>
 
-                                <RoundRectangle BackgroundColor="#edebf6"
-                                    CornerRadius="10"
-                                    HeightRequest="120"
-                                    WidthRequest="120" 
-                                    HorizontalOptions="Center" 
-                                    VerticalOptions="Center" />
                                 <!-- Cuarto elemento -->
+                                <ContentView Grid.Column="3" HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Button HeightRequest="120" WidthRequest="120" Clicked="OnAdministracionClicked" BackgroundColor="#edebf6">
+                                        <Button.ImageSource>
+                                            <FontImageSource FontFamily="awesomeSolid" Glyph="&#xf085;" Size="70" Color="#2196f3" />
+                                        </Button.ImageSource>
+                                    </Button>
+                                </ContentView>
                             </StackLayout>
                         </ContentView.Content>
                     </ContentView>

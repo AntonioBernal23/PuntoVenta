@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PuntoVenta.Pages.Ventas"
+             Title="Ventas"
+             NavigationPage.HasNavigationBar="False">
+    
+    <!-- Grid principal de 2 filas -->
+    <Grid RowDefinitions=".2*,.8*">
+        
+        <!-- Primera parte del grid principal -->
+        <Grid BackgroundColor="#2196f3">
+            <ContentView HorizontalOptions="Center">
+                <Label Text="Ventas" TextColor="White" FontSize="50" FontFamily="bold" />
+            </ContentView>
+        </Grid>
+        
+        <!-- Segunda parte del grid principal -->
+        <Grid Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center">
+            <RoundRectangle Margin="0,-30"
+                            CornerRadius="30,30,0,0"
+                            Fill="White" />
+            
+            <!-- Contenido para pc -->
+            <OnPlatform x:TypeArguments="ContentView">
+                <On Platform="WinUI, MacCatalyst">
+                    <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <ContentView.Content>
+
+                            <Label Text="Contenido de pc" TextColor="Black"></Label>
+                            
+                        </ContentView.Content>
+                    </ContentView>
+                </On>
+            </OnPlatform>
+            
+            <!-- Contenido para moviles -->
+            <OnPlatform x:TypeArguments="ContentView">
+                <On Platform="Android, iOS">
+                    <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <ContentView.Content>
+
+                            <Label Text="Contenido de moviles" TextColor="Black"></Label>
+                            
+                        </ContentView.Content>
+                    </ContentView>
+                </On>
+            </OnPlatform>
+
+        </Grid>
+        
+    </Grid>
+        
+</ContentPage>

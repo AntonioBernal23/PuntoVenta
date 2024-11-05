@@ -7,11 +7,10 @@
 
     <Grid RowDefinitions=".3*,.7*">
         <Image Aspect="AspectFill"
-               Source="logo.png" />
+               Source="" />
 
-        <Grid BackgroundColor="{OnPlatform Android=#2196f3, WinUI=#2196f3}"
-              Opacity="{OnPlatform Android=.5, WinUI=.5}" />
-        <!-- Esto es para que se vea diferente dependiendo la plataforma -->
+        <Grid BackgroundColor="#2196f3"
+              Opacity=".5" />
 
         <Grid Grid.Row="1">
             <RoundRectangle Margin="-5, -30, -5, -2"

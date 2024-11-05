@@ -18,31 +18,157 @@
         <!-- Segunda parte del grid principal -->
         <Grid Grid.Row="1" HorizontalOptions="Center" VerticalOptions="Center">
             <RoundRectangle Margin="0,-30"
-                        CornerRadius="30,30,0,0"
-                        Fill="White" />
+                            CornerRadius="30,30,0,0"
+                            Fill="White" />
 
             <!-- Contenido para pc -->
             <OnPlatform x:TypeArguments="ContentView">
                 <On Platform="WinUI, MacCatalyst">
                     <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                         <ContentView.Content>
+                            <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
 
-                            <Label Text="Contenido de pc" TextColor="Black"></Label>
+                                <Frame BackgroundColor="#edebf6" CornerRadius="20" Margin="30" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BorderColor="Transparent">
+                                    <Grid RowDefinitions="0.25*, 0.25*, 0.25*, 0.25*" ColumnDefinitions="0.5*, 0.5*" HorizontalOptions="FillAndExpand">
+                                        <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                                               Text="Producto nuevo"
+                                               TextColor="#283593"
+                                               FontFamily="bold" 
+                                               FontSize="Large" 
+                                               HorizontalOptions="Center" />
 
+                                        <!-- Entry para el nombre -->
+                                        <Entry Grid.Row="1" Grid.Column="0"
+                                               x:Name="NombreProductoEntryPc"
+                                               Placeholder="Nombre del producto"
+                                               TextColor="#2d2d2d"
+                                               VerticalOptions="Center"
+                                               BackgroundColor="White"
+                                               FontFamily="medium" 
+                                               Margin="5" />
+
+                                        <!--Entry para el precio del producto -->
+                                        <Entry Grid.Row="1" Grid.Column="1"
+                                               x:Name="PrecioProductoEntryPc"
+                                               Placeholder="Precio del producto"
+                                               TextColor="#2d2d2d"
+                                               VerticalOptions="Center"
+                                               BackgroundColor="White"
+                                               FontFamily="medium"
+                                               Margin="5" />
+
+                                        <!-- Entry para cantidad -->
+                                        <Entry Grid.Row="2" Grid.Column="0"
+                                               x:Name="CantidadProductoEntryPc"
+                                               Placeholder="Cantidad a agregar a inventario"
+                                               TextColor="#2d2d2d"
+                                               VerticalOptions="Center"
+                                               BackgroundColor="White"
+                                               FontFamily="medium"
+                                               Margin="5" />
+
+                                        <!-- Entry para descripcion -->
+                                        <Entry Grid.Row="2" Grid.Column="1"
+                                               x:Name="DescripcionProductoEntryPc"
+                                               Placeholder="Descripción del producto"
+                                               TextColor="#2d2d2d"
+                                               VerticalOptions="Center"
+                                               BackgroundColor="White"
+                                               FontFamily="medium"
+                                               Margin="5" />
+
+                                        <!-- Boton para agregar producto-->
+                                        <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                                                BackgroundColor="#283593"
+                                                HeightRequest="60"
+                                                Text="Agregar producto"
+                                                TextColor="#fbf6fd"
+                                                Clicked="OnAgregarProductoClicked"
+                                                Margin="5"/>
+                                    </Grid>
+
+                                </Frame>
+
+                                <Button Margin="30"
+                                        BackgroundColor="#2196f3"
+                                        HeightRequest="60"
+                                        Text="Ver inventario"
+                                        TextColor="#fbf6fd"
+                                        Clicked="OnVerInventarioClicked" />
+
+                            </StackLayout>
                         </ContentView.Content>
                     </ContentView>
                 </On>
             </OnPlatform>
 
-            <!-- Contenido para moviles -->
+            <!-- Contenido para móviles -->
             <OnPlatform x:TypeArguments="ContentView">
                 <On Platform="Android, iOS">
                     <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                        <ContentView.Content>
+                        <ScrollView>
+                            <VerticalStackLayout BackgroundColor="#edebf6" Margin="20" VerticalOptions="FillAndExpand">
 
-                            <Label Text="Contenido de moviles" TextColor="Black"></Label>
+                                <Label Text="Producto nuevo"
+                                       TextColor="#283593"
+                                       FontFamily="bold" 
+                                       FontSize="Large" 
+                                       HorizontalOptions="Center" />
 
-                        </ContentView.Content>
+                                <!-- Entry para el nombre -->
+                                <Entry x:Name="NombreProductoEntryMovil"
+                                       Placeholder="Nombre del producto"
+                                       TextColor="#2d2d2d"
+                                       VerticalOptions="Center"
+                                       BackgroundColor="White"
+                                       FontFamily="medium" 
+                                       Margin="5" />
+
+                                <!--Entry para el precio del producto -->
+                                <Entry x:Name="PrecioProductoEntryMovil"
+                                       Placeholder="Precio del producto"
+                                       TextColor="#2d2d2d"
+                                       VerticalOptions="Center"
+                                       BackgroundColor="White"
+                                       FontFamily="medium"
+                                       Margin="5" />
+
+                                <!-- Entry para cantidad -->
+                                <Entry x:Name="CantidadProductoEntryMovil"
+                                       Placeholder="Cantidad a agregar a inventario"
+                                       TextColor="#2d2d2d"
+                                       VerticalOptions="Center"
+                                       BackgroundColor="White"
+                                       FontFamily="medium"
+                                       Margin="5" />
+
+                                <!-- Entry para descripcion -->
+                                <Entry x:Name="DescripcionProductoEntryMovil"
+                                       Placeholder="Descripción del producto"
+                                       TextColor="#2d2d2d"
+                                       VerticalOptions="Center"
+                                       BackgroundColor="White"
+                                       FontFamily="medium"
+                                       Margin="5" />
+
+                                <!-- Boton para agregar producto-->
+                                <Button BackgroundColor="#283593"
+                                        HeightRequest="60"
+                                        Text="Agregar producto"
+                                        TextColor="#fbf6fd"
+                                        Clicked="OnAgregarProductoClicked"
+                                        Margin="5" />
+                                
+                                <!-- Boton para ver inventario -->
+                                <Button Margin="30"   
+                                        BackgroundColor="#2196f3"
+                                        HeightRequest="60"
+                                        Text="Ver inventario"
+                                        TextColor="#fbf6fd"
+                                        Clicked="OnVerInventarioClicked" />
+
+                            </VerticalStackLayout>
+                        </ScrollView>
                     </ContentView>
                 </On>
             </OnPlatform>

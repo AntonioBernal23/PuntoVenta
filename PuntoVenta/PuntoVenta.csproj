@@ -60,7 +60,6 @@
 	  <None Remove="Resources\Fonts\fa-solid-900.ttf" />
 	  <None Remove="Resources\Fonts\IBMPlexSans-Bold.ttf" />
 	  <None Remove="Resources\Fonts\Lato-Regular.ttf" />
-	  <None Remove="Resources\Images\logo.png" />
 	  <None Remove="Resources\Splash\icono.png" />
 	</ItemGroup>
 

@@ -94,6 +94,23 @@
                         TextColor="#fbf6fd"
                         Clicked="OnLoginClicked" />
 
+                <!--Para agregar un usuario administrador a la bd-->
+                <!--
+                <Entry Placeholder="Nombre"
+                       x:Name="NombreEntry"
+                       TextColor="Black"/>
+
+                <Entry Placeholder="Usuario"
+                       x:Name="UsuarioEntry" 
+                       TextColor="Black"/>
+
+                <Entry Placeholder="Contraseña"
+                       x:Name="ContraseñaEntry"
+                       TextColor="Black"/>
+
+                <Button Clicked="OnAgregar" Text="agregar" />
+                -->
+                
             </VerticalStackLayout>
         </Grid>
     </Grid>

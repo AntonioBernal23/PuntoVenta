@@ -29,7 +29,7 @@
                             <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
 
                                 <Frame BackgroundColor="#edebf6" CornerRadius="20" Margin="30" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BorderColor="Transparent">
-                                    <Grid RowDefinitions="0.25*, 0.25*, 0.25*, 0.25*" ColumnDefinitions="0.5*, 0.5*" HorizontalOptions="FillAndExpand">
+                                    <Grid RowDefinitions="0.20*, 0.20*, 0.20*, 0.20*, 0.20*" ColumnDefinitions="0.5*, 0.5*" HorizontalOptions="FillAndExpand">
                                         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                                                Text="Producto nuevo"
                                                TextColor="#283593"
@@ -77,8 +77,18 @@
                                                FontFamily="medium"
                                                Margin="5" />
 
+                                        <Picker Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                                                x:Name="ProveedorProductoPickerPc" 
+                                                Title="Proveedor del producto"
+                                                TextColor="#2b2b2b"
+                                                VerticalOptions="Center"
+                                                BackgroundColor="White"
+                                                FontFamily="medium"
+                                                Margin="5"
+                                                HeightRequest="60"/>
+
                                         <!-- Boton para agregar producto-->
-                                        <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                                        <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
                                                 BackgroundColor="#283593"
                                                 HeightRequest="60"
                                                 Text="Agregar producto"
@@ -150,6 +160,16 @@
                                        BackgroundColor="White"
                                        FontFamily="medium"
                                        Margin="5" />
+
+                                <Picker Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                                        x:Name="ProveedorProductoPickerMovil" 
+                                        Title="Proveedor del producto"
+                                        TextColor="#2b2b2b"
+                                        VerticalOptions="Center"
+                                        BackgroundColor="White"
+                                        FontFamily="medium"
+                                        Margin="5"
+                                        HeightRequest="60"/>
 
                                 <!-- Boton para agregar producto-->
                                 <Button BackgroundColor="#283593"

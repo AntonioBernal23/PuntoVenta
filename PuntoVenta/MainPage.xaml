@@ -21,7 +21,7 @@
                 <Label FontAttributes="Bold"
                        FontFamily="bold"
                        FontSize="Medium"
-                       Text="Welcome!"
+                       Text="Bienvenido!"
                        TextColor="#2d2d2d" />
 
                 <Label FontFamily="medium"
@@ -50,7 +50,7 @@
 
                     <Entry Grid.Column="1"
                            x:Name="EntryUser"
-                           Placeholder="USER"
+                           Placeholder="USUARIO"
                            VerticalOptions="Center"
                            Background="#edebf6" 
                            TextColor="#2d2d2d" 
@@ -79,7 +79,7 @@
 
                     <Entry Grid.Column="1"
                            x:Name="EntryPassword"
-                           Placeholder="PASSWORD"
+                           Placeholder="CONTRASEÑA"
                            IsPassword="True"
                            VerticalOptions="Center"
                            Background="#edebf6" 

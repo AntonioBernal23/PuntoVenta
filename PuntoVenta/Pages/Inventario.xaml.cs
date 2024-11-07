@@ -24,17 +24,17 @@ namespace PuntoVenta.Pages
         // Inicializa los Entrys y los Pickers
         private void InicializarEntrys()
         {
-            // Inicializando los Entrys
-            NombreProductoEntry = (Entry)FindByName("NombreProductoEntry");
-            PrecioProductoEntry = (Entry)FindByName("PrecioProductoEntry");
-            CantidadProductoEntry = (Entry)FindByName("CantidadProductoEntry");
-            DescripcionProductoEntry = (Entry)FindByName("DescripcionProductoEntry");
+            // Intenta asignar cada Entry y Picker de acuerdo al dispositivo
+            NombreProductoEntry = (Entry)FindByName("NombreProductoEntryPc") ?? (Entry)FindByName("NombreProductoEntryMovil");
+            PrecioProductoEntry = (Entry)FindByName("PrecioProductoEntryPc") ?? (Entry)FindByName("PrecioProductoEntryMovil");
+            CantidadProductoEntry = (Entry)FindByName("CantidadProductoEntryPc") ?? (Entry)FindByName("CantidadProductoEntryMovil");
+            DescripcionProductoEntry = (Entry)FindByName("DescripcionProductoEntryPc") ?? (Entry)FindByName("DescripcionProductoEntryMovil");
 
             // Inicializando la lista de Pickers
             ProveedorProductoPickers = new List<Picker>
             {
-                (Picker)FindByName("ProveedorProductoPickerPc"), // Picker para PC
-                (Picker)FindByName("ProveedorProductoPickerMovil") // Picker para móvil
+                (Picker)FindByName("ProveedorProductoPickerPc"),
+                (Picker)FindByName("ProveedorProductoPickerMovil")
             };
         }
 
@@ -112,16 +112,71 @@ namespace PuntoVenta.Pages
         // Evento al hacer clic en el botón "Agregar Producto"
         private void OnAgregarProductoClicked(object sender, EventArgs e)
         {
-            string nombre = NombreProductoEntry?.Text;
-            string precio = PrecioProductoEntry?.Text;
-            string cantidad = CantidadProductoEntry?.Text;
-            string descripcion = DescripcionProductoEntry?.Text;
+            // Obtener los valores de los campos de texto
+            string nombre = NombreProductoEntry?.Text?.Trim();
+            string precioTexto = PrecioProductoEntry?.Text?.Trim();
+            string cantidadTexto = CantidadProductoEntry?.Text?.Trim();
+            string descripcion = DescripcionProductoEntry?.Text?.Trim();
+            string proveedor = ObtenerProveedorSeleccionado()?.Trim();
 
-            // Verificar cuál de los dos Pickers está seleccionado
-            string proveedor = ObtenerProveedorSeleccionado();
+            // Verifica si alguno de los campos es nulo o vacío
+            if (string.IsNullOrEmpty(nombre) ||
+                string.IsNullOrEmpty(precioTexto) ||
+                string.IsNullOrEmpty(cantidadTexto) ||
+                string.IsNullOrEmpty(descripcion) ||
+                string.IsNullOrEmpty(proveedor))
+            {
+                DisplayAlert("Error", "No puede haber ningún campo vacío.", "OK");
+                return;
+            }
 
-            // Procesa los datos (ejemplo: mostrando una alerta)
-            DisplayAlert("Producto Agregado", $"Nombre: {nombre}\nPrecio: {precio}\nCantidad: {cantidad}\nDescripción: {descripcion}\nProveedor: {proveedor}", "OK");
+            // Verificar si la cantidad es un número entero
+            if (!int.TryParse(cantidadTexto, out int cantidad))
+            {
+                DisplayAlert("Error", "El campo 'Cantidad' debe ser un número entero.", "OK");
+                return;
+            }
+
+            // Verificar si el precio es un número decimal (que incluye enteros)
+            if (!decimal.TryParse(precioTexto, out decimal precio))
+            {
+                DisplayAlert("Error", "El campo 'Precio' debe ser un número válido (entero o decimal).", "OK");
+                return;
+            }
+
+            // Crear una instancia de Producto
+            Producto nuevoProducto = new Producto(nombre, precio, cantidad, descripcion, proveedor);
+
+            // Insertar el producto en la base de datos
+            InsertarProductoAsync(nuevoProducto);
+        }
+
+        // Método para insertar producto en la base de datos
+        private async Task InsertarProductoAsync(Producto producto)
+        {
+            try
+            {
+                using (var connection = new MySqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+                    var query = "INSERT INTO inventario (nombre, precio, cantidad, descripcion, proveedor) VALUES (@nombre, @precio, @cantidad, @descripcion, @proveedor)";
+                    using (var command = new MySqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@nombre", producto.Nombre);
+                        command.Parameters.AddWithValue("@precio", producto.Precio);
+                        command.Parameters.AddWithValue("@cantidad", producto.Cantidad);
+                        command.Parameters.AddWithValue("@descripcion", producto.Descripcion);
+                        command.Parameters.AddWithValue("@proveedor", producto.Proveedor);
+
+                        await command.ExecuteNonQueryAsync();
+                    }
+                }
+                await DisplayAlert("Éxito", "Producto agregado correctamente.", "OK");
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Error", $"Error al agregar el producto: {ex.Message}", "OK");
+            }
         }
 
         // Obtener el proveedor seleccionado, ya sea del Picker para PC o para Movil
@@ -136,7 +191,7 @@ namespace PuntoVenta.Pages
                     return proveedorSeleccionado;
                 }
             }
-            return "Proveedor no seleccionado";
+            return null;
         }
 
         // Evento al hacer clic en el botón "Ver Inventario"

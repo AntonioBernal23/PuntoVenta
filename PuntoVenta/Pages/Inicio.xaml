@@ -26,7 +26,7 @@
                 <On Platform="WinUI, MacCatalyst">
                     <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                         <ContentView.Content>
-                            
+
                             <!-- Grid secundario para contenido de pc -->
                             <Grid x:Name="MainGrid" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                                 <Grid.ColumnDefinitions>
@@ -47,7 +47,7 @@
 
                                 <!-- Segundo elemento -->
                                 <ContentView Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center">
-                                    <Button HeightRequest="120" WidthRequest="120" Clicked="OnInventarioClicked" BackgroundColor="#edebf6">
+                                    <Button x:Name="InventarioBtnPc" HeightRequest="120" WidthRequest="120" Clicked="OnInventarioClicked" BackgroundColor="#edebf6">
                                         <Button.ImageSource>
                                             <FontImageSource FontFamily="awesomeSolid" Glyph="&#xf1b3;" Size="80" Color="#2196f3" />
                                         </Button.ImageSource>
@@ -56,7 +56,7 @@
 
                                 <!-- Tercer elemento -->
                                 <ContentView Grid.Column="2" HorizontalOptions="Center" VerticalOptions="Center">
-                                    <Button HeightRequest="120" WidthRequest="120" Clicked="OnClientesClicked" BackgroundColor="#edebf6">
+                                    <Button x:Name="ClientesBtnPc" HeightRequest="120" WidthRequest="120" Clicked="OnClientesClicked" BackgroundColor="#edebf6">
                                         <Button.ImageSource>
                                             <FontImageSource FontFamily="awesomeSolid" Glyph="&#xf007;" Size="80" Color="#2196f3" />
                                         </Button.ImageSource>
@@ -65,7 +65,7 @@
 
                                 <!-- Cuarto elemento -->
                                 <ContentView Grid.Column="3" HorizontalOptions="Center" VerticalOptions="Center">
-                                    <Button HeightRequest="120" WidthRequest="120" Clicked="OnAdministracionClicked" BackgroundColor="#edebf6">
+                                    <Button x:Name="AdministracionBtnPc" HeightRequest="120" WidthRequest="120" Clicked="OnAdministracionClicked" BackgroundColor="#edebf6">
                                         <Button.ImageSource>
                                             <FontImageSource FontFamily="awesomeSolid" Glyph="&#xf085;" Size="70" Color="#2196f3" />
                                         </Button.ImageSource>
@@ -83,9 +83,9 @@
                     <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                         <ContentView.Content>
                             <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="Center" Spacing="40">
-                                
+
                                 <!-- Primer elemento -->
-                                <ContentView Grid.Column="0" HorizontalOptions="Center" VerticalOptions="Center">
+                                <ContentView HorizontalOptions="Center" VerticalOptions="Center">
                                     <Button HeightRequest="120" WidthRequest="120" Clicked="OnVentasClicked" BackgroundColor="#edebf6">
                                         <Button.ImageSource>
                                             <FontImageSource FontFamily="awesomeSolid" Glyph="&#xf07a;" Size="80" Color="#2196f3" />
@@ -94,8 +94,8 @@
                                 </ContentView>
 
                                 <!-- Segundo elemento -->
-                                <ContentView Grid.Column="1" HorizontalOptions="Center" VerticalOptions="Center">
-                                    <Button HeightRequest="120" WidthRequest="120" Clicked="OnInventarioClicked" BackgroundColor="#edebf6">
+                                <ContentView HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Button x:Name="InventarioBtnMovil" HeightRequest="120" WidthRequest="120" Clicked="OnInventarioClicked" BackgroundColor="#edebf6">
                                         <Button.ImageSource>
                                             <FontImageSource FontFamily="awesomeSolid" Glyph="&#xf1b3;" Size="80" Color="#2196f3" />
                                         </Button.ImageSource>
@@ -103,8 +103,8 @@
                                 </ContentView>
 
                                 <!-- Tercer elemento -->
-                                <ContentView Grid.Column="2" HorizontalOptions="Center" VerticalOptions="Center">
-                                    <Button HeightRequest="120" WidthRequest="120" Clicked="OnClientesClicked" BackgroundColor="#edebf6">
+                                <ContentView HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Button x:Name="ClientesBtnMovil" HeightRequest="120" WidthRequest="120" Clicked="OnClientesClicked" BackgroundColor="#edebf6">
                                         <Button.ImageSource>
                                             <FontImageSource FontFamily="awesomeSolid" Glyph="&#xf007;" Size="80" Color="#2196f3" />
                                         </Button.ImageSource>
@@ -112,8 +112,8 @@
                                 </ContentView>
 
                                 <!-- Cuarto elemento -->
-                                <ContentView Grid.Column="3" HorizontalOptions="Center" VerticalOptions="Center">
-                                    <Button HeightRequest="120" WidthRequest="120" Clicked="OnAdministracionClicked" BackgroundColor="#edebf6">
+                                <ContentView HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Button x:Name="AdministracionBtnMovil" HeightRequest="120" WidthRequest="120" Clicked="OnAdministracionClicked" BackgroundColor="#edebf6">
                                         <Button.ImageSource>
                                             <FontImageSource FontFamily="awesomeSolid" Glyph="&#xf085;" Size="70" Color="#2196f3" />
                                         </Button.ImageSource>
@@ -124,7 +124,6 @@
                     </ContentView>
                 </On>
             </OnPlatform>
-
         </Grid>
     </Grid>
 </ContentPage>

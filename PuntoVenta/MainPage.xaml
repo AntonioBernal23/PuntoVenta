@@ -25,7 +25,7 @@
                        TextColor="#2d2d2d" />
 
                 <Label FontFamily="medium"
-                       Text="Log in to continue"
+                       Text="Inicia sesion para continuar"
                        TextColor="#a3a3a4" />
 
                 <!-- Grid para insertar usuario -->
@@ -90,10 +90,17 @@
                 <Button Margin="0,20,0,0"
                         BackgroundColor="#2196f3"
                         HeightRequest="60"
-                        Text="Login"
+                        Text="Iniciar sesion como administrador"
+                        TextColor="#fbf6fd"
+                        Clicked="OnLoginAdminClicked" />
+
+                <Button Margin="0,20,0,0"
+                        BackgroundColor="#2196f3"
+                        HeightRequest="60"
+                        Text="Iniciar sesion como empleado"
                         TextColor="#fbf6fd"
                         Clicked="OnLoginClicked" />
-
+                
                 <!--Para agregar un usuario administrador a la bd-->
                 <!--
                 <Entry Placeholder="Nombre"

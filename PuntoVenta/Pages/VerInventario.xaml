@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PuntoVenta.Pages.VerInventario"
+             Title="VerInventario"
+             NavigationPage.HasNavigationBar="False">
+
+    <!-- Grid principal con 2 filas -->
+    <Grid RowDefinitions=".2*,.8*">
+
+        <!-- Encabezado con el título de la página -->
+        <Grid BackgroundColor="#2196f3" HorizontalOptions="FillAndExpand" Grid.Row="0">
+            <ContentView HorizontalOptions="Center">
+                <Label Text="Productos en el inventario" TextColor="White" FontSize="30" FontFamily="bold" />
+            </ContentView>
+        </Grid>
+
+        <!-- Grid para los productos (RoundRectangle + CollectionView) -->
+        <Grid Grid.Row="1" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+
+            <!-- Fondo redondeado con margen -->
+            <RoundRectangle Margin="0, -30"
+                            CornerRadius="30,30,0,0"
+                            Fill="White" />
+
+        </Grid>
+    </Grid>
+</ContentPage>

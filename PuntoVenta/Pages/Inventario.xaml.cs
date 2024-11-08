@@ -13,7 +13,7 @@ namespace PuntoVenta.Pages
         private List<Picker> ProveedorProductoPickers; // Lista de Pickers
 
         // Conexion a la base de datos
-        private string _connectionString = "Server=35.226.94.228;Database=PuntoVenta;Uid=root;Pwd=1234;";
+        private string _connectionString = "Server=LocalHost;Database=PuntoVenta;Uid=root;Pwd=1234;";
 
         public Inventario()
         {
@@ -172,10 +172,28 @@ namespace PuntoVenta.Pages
                     }
                 }
                 await DisplayAlert("Éxito", "Producto agregado correctamente.", "OK");
+
+                LimpiarCampos();
             }
             catch (Exception ex)
             {
                 await DisplayAlert("Error", $"Error al agregar el producto: {ex.Message}", "OK");
+            }
+        }
+
+        //metodo para limpiar campos
+        private void LimpiarCampos()
+        {
+            // Limpiar Entrys
+            NombreProductoEntry.Text = string.Empty;
+            PrecioProductoEntry.Text = string.Empty;
+            CantidadProductoEntry.Text = string.Empty;
+            DescripcionProductoEntry.Text = string.Empty;
+
+            // Limpiar Pickers
+            foreach (var picker in ProveedorProductoPickers)
+            {
+                picker.SelectedItem = null;
             }
         }
 
@@ -197,7 +215,7 @@ namespace PuntoVenta.Pages
         // Evento al hacer clic en el botón "Ver Inventario"
         private async void OnVerInventarioClicked(object sender, EventArgs e)
         {
-
+            await Navigation.PushAsync(new Pages.VerInventario());
         }
     }
 }

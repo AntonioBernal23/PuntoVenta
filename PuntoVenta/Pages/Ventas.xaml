@@ -27,7 +27,25 @@
                     <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                         <ContentView.Content>
 
-                            <Label Text="Contenido de pc" TextColor="Black"></Label>
+                            <Grid ColumnDefinitions=".50*,.50*">
+                                <!-- Primer elemento -->
+                                <ContentView HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Button HeightRequest="500" WidthRequest="500" Clicked="OnRealizarVentasClicked" BackgroundColor="#edebf6">
+                                        <Button.ImageSource>
+                                            <FontImageSource FontFamily="awesomeSolid" Glyph="&#xf788;" Size="380" Color="#2196f3" />
+                                        </Button.ImageSource>
+                                    </Button>
+                                </ContentView>
+
+                                <!-- Segundo elemento -->
+                                <ContentView x:Name="HistorialVentasBtnPc" HorizontalOptions="Center" VerticalOptions="Center" Grid.Column="1">
+                                    <Button HeightRequest="500" WidthRequest="500" Clicked="OnHistorialVentasClicked" BackgroundColor="#edebf6">
+                                        <Button.ImageSource>
+                                            <FontImageSource FontFamily="awesomeSolid" Glyph="&#xf02d;" Size="380" Color="#2196f3" />
+                                        </Button.ImageSource>
+                                    </Button>
+                                </ContentView>
+                            </Grid>
                             
                         </ContentView.Content>
                     </ContentView>
@@ -40,7 +58,25 @@
                     <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                         <ContentView.Content>
 
-                            <Label Text="Contenido de moviles" TextColor="Black"></Label>
+                            <Grid RowDefinitions=".50*,.50*">
+                                <!-- Primer elemento -->
+                                <ContentView HorizontalOptions="Center" VerticalOptions="Center">
+                                    <Button HeightRequest="200" WidthRequest="200" Clicked="OnRealizarVentasClicked" BackgroundColor="#edebf6">
+                                        <Button.ImageSource>
+                                            <FontImageSource FontFamily="awesomeSolid" Glyph="&#xf788;" Size="380" Color="#2196f3" />
+                                        </Button.ImageSource>
+                                    </Button>
+                                </ContentView>
+
+                                <!-- Segundo elemento -->
+                                <ContentView x:Name="HistorialVentasBtnMovil" HorizontalOptions="Center" VerticalOptions="Center" Grid.Row="1">
+                                    <Button HeightRequest="200" WidthRequest="200" Clicked="OnHistorialVentasClicked" BackgroundColor="#edebf6">
+                                        <Button.ImageSource>
+                                            <FontImageSource FontFamily="awesomeSolid" Glyph="&#xf02d;" Size="380" Color="#2196f3" />
+                                        </Button.ImageSource>
+                                    </Button>
+                                </ContentView>
+                            </Grid>
                             
                         </ContentView.Content>
                     </ContentView>

@@ -1,4 +1,5 @@
 ﻿using MySql.Data.MySqlClient;
+using PuntoVenta.Models;
 using System;
 using System.Security.Cryptography;
 using System.Text;
@@ -8,7 +9,7 @@ namespace PuntoVenta
 {
     public partial class MainPage : ContentPage
     {
-        private string _connectionString = "Server=LocalHost;Database=PuntoVenta;Uid=root;Pwd=1234;";
+        string _connectionString = Conexion.ConnectionString;
 
         public MainPage()
         {

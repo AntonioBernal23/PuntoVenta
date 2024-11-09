@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Microsoft.Maui.Controls;
+using PuntoVenta.Models;
 
 namespace PuntoVenta.Pages
 {
@@ -13,7 +14,7 @@ namespace PuntoVenta.Pages
         private List<Picker> ProveedorProductoPickers; // Lista de Pickers
 
         // Conexion a la base de datos
-        private string _connectionString = "Server=LocalHost;Database=PuntoVenta;Uid=root;Pwd=1234;";
+        string _connectionString = Conexion.ConnectionString;
 
         public Inventario()
         {

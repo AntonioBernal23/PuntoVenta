@@ -1,5 +1,4 @@
-﻿namespace PuntoVenta.Pages
-{
+﻿namespace PuntoVenta.Pages { 
     public class Producto
     {
         public string Nombre { get; set; }

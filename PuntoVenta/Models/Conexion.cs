@@ -9,6 +9,6 @@ namespace PuntoVenta.Models
     internal class Conexion
     {
         // Definir la variable de conexión como pública y estática
-        public static string ConnectionString { get; } = "Server=192.168.1.104;Database=PuntoVenta;Uid=tony;Pwd=1234;";
+        public static string ConnectionString { get; } = "Server=10.226.160.104;Database=PuntoVenta;Uid=tony;Pwd=1234;";
     }
 }

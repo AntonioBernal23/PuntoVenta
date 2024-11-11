@@ -29,7 +29,7 @@
                             <StackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
 
                                 <Frame BackgroundColor="#edebf6" CornerRadius="20" Margin="30" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BorderColor="Transparent">
-                                    <Grid RowDefinitions="0.20*, 0.20*, 0.20*, 0.20*, 0.20*" ColumnDefinitions="0.5*, 0.5*" HorizontalOptions="FillAndExpand">
+                                    <Grid RowDefinitions="0.14*, 0.14*, 0.14*, 0.14*, 0.14*, 0.14*" ColumnDefinitions="0.5*, 0.5*" HorizontalOptions="FillAndExpand">
                                         <Label Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
                                                Text="Producto nuevo"
                                                TextColor="#283593"
@@ -89,23 +89,47 @@
 
                                         <!-- Boton para agregar producto-->
                                         <Button Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2"
+                                                x:Name="AgregarProductoBtnPc"
                                                 BackgroundColor="#283593"
                                                 HeightRequest="60"
                                                 Text="Agregar producto"
                                                 TextColor="#fbf6fd"
                                                 Clicked="OnAgregarProductoClicked"
                                                 Margin="5"/>
+
+                                        <!-- Boton para modificar algo de un producto -->
+                                        <Button Grid.Row="4" Grid.Column="0"
+                                                x:Name="ActualizarInformacionBtnPc"
+                                                BackgroundColor="#283593"
+                                                HeightRequest="60"
+                                                Text="Actualizar información"
+                                                TextColor="#fbf6fd"
+                                                Clicked="OnActualizarInformacionClicked"
+                                                Margin="5"
+                                                IsVisible="False" />
+
+                                        <!-- Boton para modificar un producto -->
+                                        <Button Grid.Row="4" Grid.Column="1"
+                                                x:Name="EliminarProductoBtnPc"
+                                                BackgroundColor="#283593"
+                                                HeightRequest="60"
+                                                Text="Eliminar ptoducto"
+                                                TextColor="#fbf6fd"
+                                                Clicked="OnEliminarProductoClicked"
+                                                Margin="5"
+                                                IsVisible="False" />
+
+                                        <ScrollView Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2">
+                                            <ListView x:Name="productosListViewPc" BackgroundColor="#2196f3" >
+                                                <ListView.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <TextCell Text="{Binding Nombre}" Detail="{Binding Precio}" TextColor="Black" />
+                                                    </DataTemplate>
+                                                </ListView.ItemTemplate>
+                                            </ListView>
+                                        </ScrollView>
                                     </Grid>
-
                                 </Frame>
-
-                                <Button Margin="30"
-                                        BackgroundColor="#2196f3"
-                                        HeightRequest="60"
-                                        Text="Ver inventario"
-                                        TextColor="#fbf6fd"
-                                        Clicked="OnVerInventarioClicked" />
-
                             </StackLayout>
                         </ContentView.Content>
                     </ContentView>
@@ -178,14 +202,26 @@
                                         TextColor="#fbf6fd"
                                         Clicked="OnAgregarProductoClicked"
                                         Margin="5" />
-                                
-                                <!-- Boton para ver inventario -->
-                                <Button Margin="30"   
-                                        BackgroundColor="#2196f3"
+
+                                <!-- Boton para modificar algo de un producto -->
+                                <Button x:Name="ActualizarInformacionBtnMovil"
+                                        BackgroundColor="#283593"
                                         HeightRequest="60"
-                                        Text="Ver inventario"
+                                        Text="Actualizar información"
                                         TextColor="#fbf6fd"
-                                        Clicked="OnVerInventarioClicked" />
+                                        Clicked="OnActualizarInformacionClicked"
+                                        Margin="5"
+                                        IsVisible="False" />
+
+                                <!-- Boton para modificar un producto -->
+                                <Button x:Name="EliminarProductoBtnMovil"
+                                        BackgroundColor="#283593"
+                                        HeightRequest="60"
+                                        Text="Eliminar ptoducto"
+                                        TextColor="#fbf6fd"
+                                        Clicked="OnEliminarProductoClicked"
+                                        Margin="5"
+                                        IsVisible="False" />
 
                             </VerticalStackLayout>
                         </ScrollView>

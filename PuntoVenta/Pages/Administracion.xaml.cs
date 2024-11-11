@@ -109,7 +109,6 @@ namespace PuntoVenta.Pages
                     Console.WriteLine($"Error al obtener empleados: {ex.Message}");
                 }
             }
-
             return empleados;
         }
 

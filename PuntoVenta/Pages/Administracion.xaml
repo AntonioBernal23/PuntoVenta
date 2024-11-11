@@ -75,6 +75,7 @@
                                        Margin="5" />
 
                                 <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                                        x:Name="AgregarEmpleadoBtnPc"
                                         BackgroundColor="#283593"
                                         HeightRequest="60"
                                         Text="Agregar Empleado"
@@ -83,6 +84,7 @@
                                         Margin="5" />
 
                                 <Button Grid.Row="3" Grid.Column="0"
+                                        x:Name="ActualizarInformacionBtnPc"
                                         BackgroundColor="#283593"
                                         HeightRequest="60"
                                         Text="Actualizar información"
@@ -92,6 +94,7 @@
                                         IsVisible="False" />
 
                                 <Button Grid.Row="3" Grid.Column="1"
+                                        x:Name="EliminarEmpleadoBtnPc"
                                         BackgroundColor="#283593"
                                         HeightRequest="60"
                                         Text="Eliminar empleado"

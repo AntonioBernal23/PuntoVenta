@@ -11,7 +11,7 @@
         <!-- Primera parte del grid principal -->
         <Grid BackgroundColor="#2196f3">
             <ContentView HorizontalOptions="Center">
-                <Label Text="Bienvenido" TextColor="White" FontSize="50" FontFamily="bold" />
+                <Label Text="Bienvenido" x:Name="lblEncabezado" TextColor="White" FontSize="50" FontFamily="bold" />
             </ContentView>
         </Grid>
 

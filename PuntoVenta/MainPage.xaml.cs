@@ -16,6 +16,10 @@ namespace PuntoVenta
             InitializeComponent();
         }
 
+        // Propiedad estática para almacenar el nombre del usuario (empleado o administrador)
+        public static string NombreUsuario { get; private set; }
+
+        // Propiedad estática para verificar si es un empleado
         public static bool IsEmpleado { get; private set; }
 
         // Evento de clic en el login de empleados
@@ -31,16 +35,18 @@ namespace PuntoVenta
             }
 
             var contraseñaEncriptada = EncriptarContraseña(contraseña);
+            var nombreEmpleado = await ObtenerNombreEmpleadoAsync(usuario, contraseñaEncriptada);
 
-            // Verificar las credenciales de los empleados
-            var esValido = await VerificarCredencialesEmpleadosAsync(usuario, contraseñaEncriptada);
-
-            if (esValido)
+            if (nombreEmpleado != null)
             {
-                IsEmpleado = true; // Marcar que el usuario es un empelado
-                EntryUser.Text = "";
-                EntryPassword.Text = "";
-                await Navigation.PushAsync(new Pages.Inicio()); // Redirige a la página de inicio
+                IsEmpleado = true;
+                NombreUsuario = nombreEmpleado;  // Asignamos el nombre del empleado
+
+                //Limpiar los campos
+                EntryUser.Text = string.Empty;
+                EntryPassword.Text = string.Empty;
+
+                await Navigation.PushAsync(new Pages.Inicio());
             }
             else
             {
@@ -61,14 +67,18 @@ namespace PuntoVenta
             }
 
             var contraseñaEncriptada = EncriptarContraseña(contraseña);
+            var nombreAdministrador = await ObtenerNombreAdministradorAsync(usuario, contraseñaEncriptada);
 
-            // Verificar las credenciales de los administradores
-            var esValido = await VerificarCredencialesAsync(usuario, contraseñaEncriptada);
-
-            if (esValido)
+            if (nombreAdministrador != null)
             {
-                IsEmpleado = false; // Marcar que el usuario es un administrador
-                await Navigation.PushAsync(new Pages.Inicio()); // Redirige a la página de inicio
+                IsEmpleado = false;
+                NombreUsuario = nombreAdministrador;  // Asignamos el nombre del administrador
+
+                //Limpiar los campos
+                EntryUser.Text = string.Empty;
+                EntryPassword.Text = string.Empty;
+
+                await Navigation.PushAsync(new Pages.Inicio());
             }
             else
             {
@@ -76,61 +86,53 @@ namespace PuntoVenta
             }
         }
 
-        // Método para verificar las credenciales del administrador
-        private async Task<bool> VerificarCredencialesAsync(string usuario, string contraseñaEncriptada)
+        // Método para verificar las credenciales del administrador y obtener su nombre
+        private async Task<string> ObtenerNombreAdministradorAsync(string usuario, string contraseñaEncriptada)
         {
             try
             {
                 using (var connection = new MySqlConnection(_connectionString))
                 {
                     await connection.OpenAsync();
-                    var query = "SELECT COUNT(*) FROM administradores WHERE usuario = @usuario AND contraseña = @contraseña";
+                    var query = "SELECT nombre FROM administradores WHERE usuario = @usuario AND contraseña = @contraseña";
                     using (var command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@usuario", usuario);
                         command.Parameters.AddWithValue("@contraseña", contraseñaEncriptada);
-
-                        // Ejecutar la consulta y verificar si el usuario existe con la contraseña correcta
                         var result = await command.ExecuteScalarAsync();
-
-                        // Si el resultado es mayor a 0, las credenciales son correctas
-                        return Convert.ToInt32(result) > 0;
+                        return result?.ToString();
                     }
                 }
             }
             catch (Exception ex)
             {
                 await DisplayAlert("Error", $"Error al verificar las credenciales: {ex.Message}", "OK");
-                return false;
+                return null;
             }
         }
 
-        // Método para verificar las credenciales de los empleados
-        private async Task<bool> VerificarCredencialesEmpleadosAsync(string usuario, string contraseñaEncriptada)
+        // Método para verificar las credenciales de los empleados y obtener su nombre
+        private async Task<string> ObtenerNombreEmpleadoAsync(string usuario, string contraseñaEncriptada)
         {
             try
             {
                 using (var connection = new MySqlConnection(_connectionString))
                 {
                     await connection.OpenAsync();
-                    var query = "SELECT COUNT(*) FROM empleados WHERE usuario = @usuario AND contraseña = @contraseña";
+                    var query = "SELECT nombre FROM empleados WHERE usuario = @usuario AND contraseña = @contraseña";
                     using (var command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@usuario", usuario);
                         command.Parameters.AddWithValue("@contraseña", contraseñaEncriptada);
-
-                        // Ejecutar la consulta y verificar si el usuario existe con la contraseña correcta
                         var result = await command.ExecuteScalarAsync();
-
-                        // Si el resultado es mayor a 0, las credenciales son correctas
-                        return Convert.ToInt32(result) > 0;
+                        return result?.ToString();
                     }
                 }
             }
             catch (Exception ex)
             {
                 await DisplayAlert("Error", $"Error al verificar las credenciales: {ex.Message}", "OK");
-                return false;
+                return null;
             }
         }
 
@@ -168,7 +170,7 @@ namespace PuntoVenta
         }
         
 
-        // Método para agregar un administrador a la base de datos (comentado)
+        // Método para agregar un administrador a la base de datos
         private async Task AgregarAdministradorAsync(string nombre, string usuario, string contraseña)
         {
             try

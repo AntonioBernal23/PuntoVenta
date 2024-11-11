@@ -21,29 +21,179 @@
                         CornerRadius="30,30,0,0"
                         Fill="White" />
 
-            <!-- Contenido para pc -->
+            <!-- Contenido para PC -->
             <OnPlatform x:TypeArguments="ContentView">
                 <On Platform="WinUI, MacCatalyst">
                     <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                        <ContentView.Content>
+                        <Frame BackgroundColor="#edebf6" CornerRadius="20" Margin="30" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" BorderColor="Transparent">
+                            <Grid RowDefinitions=".15*,.15*,.15*,.15*,.40*" ColumnDefinitions=".50*,.50*">
+                                <Label Grid.ColumnSpan="2"
+                                       Text="Empleados"
+                                       TextColor="#283593"
+                                       FontFamily="bold"
+                                       FontSize="Large"
+                                       HorizontalOptions="Center" />
 
-                            <Label Text="Contenido de pc" TextColor="Black"></Label>
+                                <!-- Entry para el nombre -->
+                                <Entry Grid.Row="1" Grid.Column="0"
+                                       x:Name="NombreEntryPc"
+                                       Placeholder="Nombre del empleado"
+                                       TextColor="#2d2d2d"
+                                       VerticalOptions="Center"
+                                       BackgroundColor="White"
+                                       FontFamily="medium"
+                                       Margin="5" />
 
-                        </ContentView.Content>
+                                <!-- Entry para apellidos -->
+                                <Entry Grid.Row="1" Grid.Column="1"
+                                       x:Name="ApellidosEntryPc"
+                                       Placeholder="Apellidos del empleado"
+                                       TextColor="#2d2d2d"
+                                       VerticalOptions="Center"
+                                       BackgroundColor="White"
+                                       FontFamily="medium"
+                                       Margin="5" />
+
+                                <!-- Entry para el usuario -->
+                                <Entry Grid.Row="2" Grid.Column="0"
+                                       x:Name="UsuarioEntryPc"
+                                       Placeholder="Usuario del empleado"
+                                       TextColor="#2d2d2d"
+                                       VerticalOptions="Center"
+                                       BackgroundColor="White"
+                                       FontFamily="medium"
+                                       Margin="5" />
+
+                                <!-- Entry para la contraseña -->
+                                <Entry Grid.Row="2" Grid.Column="1"
+                                       x:Name="ContraseñaEntryPc"
+                                       Placeholder="Contraseña del empleado"
+                                       TextColor="#2d2d2d"
+                                       VerticalOptions="Center"
+                                       BackgroundColor="White"
+                                       FontFamily="medium"
+                                       Margin="5" />
+
+                                <Button Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
+                                        BackgroundColor="#283593"
+                                        HeightRequest="60"
+                                        Text="Agregar Empleado"
+                                        TextColor="#fbf6fd"
+                                        Clicked="OnAgregarEmpleadoClicked"
+                                        Margin="5" />
+
+                                <Button Grid.Row="3" Grid.Column="0"
+                                        BackgroundColor="#283593"
+                                        HeightRequest="60"
+                                        Text="Actualizar información"
+                                        TextColor="#fbf6fd"
+                                        Clicked="OnActualizarInformacionClicked"
+                                        Margin="5"
+                                        IsVisible="False" />
+
+                                <Button Grid.Row="3" Grid.Column="1"
+                                        BackgroundColor="#283593"
+                                        HeightRequest="60"
+                                        Text="Eliminar empleado"
+                                        TextColor="#fbf6fd"
+                                        Clicked="OnEliminarEmpleadoClicked"
+                                        Margin="5"
+                                        IsVisible="False" />
+
+                                <ScrollView Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2">
+                                    <ListView x:Name="empleadosListViewPc">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextCell Text="{Binding nombre}" Detail="{Binding usuario}" TextColor="Black" />
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </ScrollView>
+                            </Grid>
+                        </Frame>
                     </ContentView>
                 </On>
             </OnPlatform>
 
-            <!-- Contenido para moviles -->
+            <!-- Contenido para móviles -->
             <OnPlatform x:TypeArguments="ContentView">
                 <On Platform="Android, iOS">
-                    <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                        <ContentView.Content>
+                    <VerticalStackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                        <ScrollView>
+                            <Label Text="Empleados"
+                                   TextColor="#283593"
+                                   FontFamily="bold"
+                                   FontSize="Large"
+                                   HorizontalOptions="Center" />
 
-                            <Label Text="Contenido de moviles" TextColor="Black"></Label>
+                            <!-- Entry para el nombre -->
+                            <Entry x:Name="NombreEntryMovil"
+                                   Placeholder="Nombre del empleado"
+                                   TextColor="#2d2d2d"
+                                   VerticalOptions="Center"
+                                   BackgroundColor="White"
+                                   FontFamily="medium"
+                                   Margin="5" />
 
-                        </ContentView.Content>
-                    </ContentView>
+                            <!-- Entry para apellidos -->
+                            <Entry x:Name="ApellidosEntryMovil"
+                                   Placeholder="Apellidos del empleado"
+                                   TextColor="#2d2d2d"
+                                   VerticalOptions="Center"
+                                   BackgroundColor="White"
+                                   FontFamily="medium"
+                                   Margin="5" />
+
+                            <!-- Entry para el usuario -->
+                            <Entry x:Name="UsuarioEntryMovil"
+                                   Placeholder="Usuario del empleado"
+                                   TextColor="#2d2d2d"
+                                   VerticalOptions="Center"
+                                   BackgroundColor="White"
+                                   FontFamily="medium"
+                                   Margin="5" />
+
+                            <!-- Entry para la contraseña -->
+                            <Entry x:Name="ContraseñaEntryMovil"
+                                   Placeholder="Contraseña del empleado"
+                                   TextColor="#2d2d2d"
+                                   VerticalOptions="Center"
+                                   BackgroundColor="White"
+                                   FontFamily="medium"
+                                   Margin="5" />
+
+                            <Button BackgroundColor="#283593"
+                                    HeightRequest="60"
+                                    Text="Agregar Empleado"
+                                    TextColor="#fbf6fd"
+                                    Clicked="OnAgregarEmpleadoClicked"
+                                    Margin="5" />
+
+                            <Button BackgroundColor="#283593"
+                                    HeightRequest="60"
+                                    Text="Actualizar información"
+                                    TextColor="#fbf6fd"
+                                    Clicked="OnActualizarInformacionClicked"
+                                    Margin="5"
+                                    IsVisible="False" />
+
+                            <Button BackgroundColor="#283593"
+                                    HeightRequest="60"
+                                    Text="Eliminar empleado"
+                                    TextColor="#fbf6fd"
+                                    Clicked="OnEliminarEmpleadoClicked"
+                                    Margin="5"
+                                    IsVisible="False" />
+
+                            <ListView x:Name="empleadosListViewMovil">
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <TextCell Text="{Binding nombre}" Detail="{Binding usuario}" TextColor="Black" />
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </ScrollView>
+                    </VerticalStackLayout>
                 </On>
             </OnPlatform>
 

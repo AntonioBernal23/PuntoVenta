@@ -6,6 +6,7 @@ namespace PuntoVenta.Pages
         {
             InitializeComponent();
             DesactivarBotones();
+            lblEncabezado.Text = $"Hola, {MainPage.NombreUsuario}";
         }
 
         // Método para desactivar botones si es un empleado

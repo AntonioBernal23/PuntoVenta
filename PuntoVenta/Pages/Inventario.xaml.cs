@@ -23,21 +23,45 @@ namespace PuntoVenta.Pages
         }
 
         // Inicializa los Entrys y los Pickers
-        private void InicializarEntrys()
+        private async Task InicializarEntrys()
         {
-            // Intenta asignar cada Entry y Picker de acuerdo al dispositivo
-            NombreProductoEntry = (Entry)FindByName("NombreProductoEntryPc") ?? (Entry)FindByName("NombreProductoEntryMovil");
-            PrecioProductoEntry = (Entry)FindByName("PrecioProductoEntryPc") ?? (Entry)FindByName("PrecioProductoEntryMovil");
-            CantidadProductoEntry = (Entry)FindByName("CantidadProductoEntryPc") ?? (Entry)FindByName("CantidadProductoEntryMovil");
-            DescripcionProductoEntry = (Entry)FindByName("DescripcionProductoEntryPc") ?? (Entry)FindByName("DescripcionProductoEntryMovil");
+            await Task.Delay(100);
 
-            // Inicializando la lista de Pickers
-            ProveedorProductoPickers = new List<Picker>
+            // Asignación condicional basada en la plataforma
+            if (DeviceInfo.Platform == DevicePlatform.Android || DeviceInfo.Platform == DevicePlatform.iOS)
             {
-                (Picker)FindByName("ProveedorProductoPickerPc"),
-                (Picker)FindByName("ProveedorProductoPickerMovil")
-            };
+                NombreProductoEntry = (Entry)FindByName("NombreProductoEntryMovil");
+                PrecioProductoEntry = (Entry)FindByName("PrecioProductoEntryMovil");
+                CantidadProductoEntry = (Entry)FindByName("CantidadProductoEntryMovil");
+                DescripcionProductoEntry = (Entry)FindByName("DescripcionProductoEntryMovil");
+                ProveedorProductoPickers = new List<Picker>
+        {
+            (Picker)FindByName("ProveedorProductoPickerMovil")
+        };
+            }
+            else
+            {
+                NombreProductoEntry = (Entry)FindByName("NombreProductoEntryPc");
+                PrecioProductoEntry = (Entry)FindByName("PrecioProductoEntryPc");
+                CantidadProductoEntry = (Entry)FindByName("CantidadProductoEntryPc");
+                DescripcionProductoEntry = (Entry)FindByName("DescripcionProductoEntryPc");
+                ProveedorProductoPickers = new List<Picker>
+        {
+            (Picker)FindByName("ProveedorProductoPickerPc")
+        };
+            }
+
+            // Registro de mensajes para verificación
+            Console.WriteLine($"NombreProductoEntry is null: {NombreProductoEntry == null}");
+            Console.WriteLine($"PrecioProductoEntry is null: {PrecioProductoEntry == null}");
+            Console.WriteLine($"CantidadProductoEntry is null: {CantidadProductoEntry == null}");
+            Console.WriteLine($"DescripcionProductoEntry is null: {DescripcionProductoEntry == null}");
+            foreach (var picker in ProveedorProductoPickers)
+            {
+                Console.WriteLine($"Picker is null: {picker == null}");
+            }
         }
+
 
         // Evento OnAppearing: Carga los proveedores cuando la página aparece
         protected override async void OnAppearing()
@@ -182,7 +206,7 @@ namespace PuntoVenta.Pages
             }
         }
 
-        //metodo para limpiar campos
+        // Método para limpiar campos
         private void LimpiarCampos()
         {
             // Limpiar Entrys

@@ -94,7 +94,7 @@
                                             IsVisible="False" />
 
                                     <Button x:Name="EliminarEmpleadoBtnPc"
-                                            BackgroundColor="#283593"
+                                            BackgroundColor="Orange"
                                             HeightRequest="60"
                                             Text="Eliminar empleado"
                                             TextColor="#fbf6fd"
@@ -117,21 +117,27 @@
                                         <ListView.ItemTemplate>
                                             <DataTemplate>
                                                 <ViewCell>
-                                                    <StackLayout Orientation="Horizontal" Padding="10" BackgroundColor="White">
-                                                        <Label Text="{Binding Nombre, StringFormat='Nombre: {0}'}"
-                                                               TextColor="#283593"
-                                                               FontSize="Medium"
-                                                               FontFamily="Arial"
-                                                               HorizontalOptions="StartAndExpand"
-                                                               VerticalOptions="Center" />
+                                                    <Frame BackgroundColor="White" CornerRadius="0">
+                                                        <StackLayout Orientation="Horizontal" Padding="10">
+                                                              <Label Text="{Binding nombre, StringFormat='Nombre: {0}'}"
+                                                                     TextColor="#2b2b2b"
+                                                                     FontSize="Medium"
+                                                                     HorizontalOptions="StartAndExpand"
+                                                                     VerticalOptions="Center" />
 
-                                                        <Label Text="{Binding Usuario, StringFormat='Usuario: {0}'}"
-                                                                   TextColor="#283593"
-                                                                   FontSize="Medium"
-                                                                   FontFamily="Arial"
-                                                                   HorizontalOptions="StartAndExpand"
-                                                                   VerticalOptions="Center" />
-                                                    </StackLayout>
+                                                              <Label Text="{Binding apellidos,StringFormat='Apellidos: {0}'}"
+                                                                     TextColor="#2b2b2b"
+                                                                     FontSize="Medium"
+                                                                     HorizontalOptions="StartAndExpand"
+                                                                     VerticalOptions="Center" />
+
+                                                              <Label Text="{Binding usuario, StringFormat='Usuario: {0}'}"
+                                                                     TextColor="#2b2b2b"
+                                                                     FontSize="Medium"
+                                                                     HorizontalOptions="StartAndExpand"
+                                                                     VerticalOptions="Center" />
+                                                        </StackLayout>
+                                                    </Frame>
                                                 </ViewCell>
                                             </DataTemplate>
                                         </ListView.ItemTemplate>

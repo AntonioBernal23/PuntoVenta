@@ -25,11 +25,47 @@
             <OnPlatform x:TypeArguments="ContentView">
                 <On Platform="WinUI, MacCatalyst">
                     <ContentView HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
-                        <ContentView.Content>
+                        <!-- <ContentView.Content> -->
+                        <Frame BackgroundColor="#edebf6" Padding="20" BorderColor="Transparent" CornerRadius="20" Margin="30" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
+                            <ScrollView>
+                                <ListView x:Name="ClientesListView" BackgroundColor="White">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <ViewCell>
+                                                <Frame BackgroundColor="White" CornerRadius="0">
+                                                    <StackLayout Orientation="Horizontal" Padding="10">
+                                                        <Label Text="{Binding ClienteId, StringFormat='Id cliente: {0}'}"
+                                                               TextColor="#2b2b2b"
+                                                               FontSize="Medium"
+                                                               HorizontalOptions="StartAndExpand"
+                                                               VerticalOptions="Center" />
 
-                            <Label Text="Contenido de pc" TextColor="Black"></Label>
+                                                        <Label Text="{Binding Nombre, StringFormat='Nombre: {0}'}"
+                                                               TextColor="#2b2b2b"
+                                                               FontSize="Medium"
+                                                               HorizontalOptions="StartAndExpand"
+                                                               VerticalOptions="Center" />
 
-                        </ContentView.Content>
+                                                        <Label Text="{Binding Apellidos, StringFormat='Apellidos: {0}'}"
+                                                               TextColor="#2b2b2b"
+                                                               FontSize="Medium"
+                                                               HorizontalOptions="StartAndExpand"
+                                                               VerticalOptions="Center" />
+
+                                                        <Label Text="{Binding Celular, StringFormat='Celular: {0}'}"
+                                                               TextColor="#2b2b2b"
+                                                               FontSize="Medium"
+                                                               HorizontalOptions="StartAndExpand"
+                                                               VerticalOptions="Center" />
+                                                    </StackLayout>
+                                                </Frame>
+                                            </ViewCell>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>
+                            </ScrollView>
+                        </Frame>
+                        <!-- </ContentView.Content> -->
                     </ContentView>
                 </On>
             </OnPlatform>
@@ -46,9 +82,6 @@
                     </ContentView>
                 </On>
             </OnPlatform>
-
         </Grid>
-
     </Grid>
-
 </ContentPage>

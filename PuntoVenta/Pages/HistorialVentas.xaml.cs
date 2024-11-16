@@ -71,11 +71,16 @@ public partial class HistorialVentas : ContentPage
 
     private async void OnEliminarVentaClicked(object sender, EventArgs e)
     {
-        var button = sender as Button;
-        if (button != null && button.CommandParameter is int ventaId)
+        var confirmacion = await DisplayAlert("Confirmar", "¿Estás seguro de eliminar este ticket?", "Sí", "No");
+
+        if (confirmacion)
         {
-            // Llamar a la función de eliminación pasando el VentaID
-            await EliminarVentaAsync(ventaId);
+            var button = sender as Button;
+            if (button != null && button.CommandParameter is int ventaId)
+            {
+                // Llamar a la función de eliminación pasando el VentaID
+                await EliminarVentaAsync(ventaId);
+            }
         }
     }
 

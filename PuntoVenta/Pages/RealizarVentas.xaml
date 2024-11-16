@@ -37,6 +37,7 @@
                 <!-- Picker para seleccionar producto -->
                 <Picker Grid.Row="0"
                         x:Name="ProductosPickerPc"
+                        TitleColor="#2b2b2b"
                         Title="Seleccionar Producto"
                         TextColor="#2b2b2b"
                         FontFamily="Medium"
@@ -63,49 +64,51 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <StackLayout Orientation="Horizontal" 
+                                    <Frame BackgroundColor="White" CornerRadius="0">
+                                        <StackLayout Orientation="Horizontal" 
                                                  Padding="10" 
                                                  Spacing="10"
                                                  BackgroundColor="#f5f5f5">
-                                        <!-- Nombre del producto -->
-                                        <Label Text="{Binding Nombre}" 
-                                               FontSize="Medium" 
-                                               TextColor="#2b2b2b" 
-                                               VerticalOptions="Center"
-                                               HorizontalOptions="StartAndExpand"/>
-                                        <!-- Precio del producto -->
-                                        <Label Text="{Binding Precio, StringFormat='Precio: {0:C}'}"
-                                               FontSize="Medium"
-                                               TextColor="#2b2b2b"
-                                               VerticalOptions="Center"
-                                               HorizontalOptions="StartAndExpand"/>
-                                        <!-- Botón disminuir -->
-                                        <Button Text="-" 
-                                                FontSize="Medium" 
-                                                BackgroundColor="#283593"
-                                                TextColor="White"
-                                                Clicked="OnDisminuirCantidadClicked"
-                                                HorizontalOptions="StartAndExpand"/>
-                                        <!-- Cantidad -->
-                                        <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}"
-                                               FontSize="Medium"
-                                               TextColor="#2b2b2b"
-                                               VerticalOptions="Center"
-                                               HorizontalOptions="StartAndExpand"/>
-                                        <!-- Botón aumentar -->
-                                        <Button Text="+" 
-                                                FontSize="Medium" 
-                                                BackgroundColor="#283593"
-                                                TextColor="White"
-                                                Clicked="OnAumentarCantidadClicked"
-                                                HorizontalOptions="StartAndExpand"/>
-                                        <!-- Subtotal -->
-                                        <Label Text="{Binding Subtotal, StringFormat='Subtotal: {0:C}'}"
-                                               FontSize="Medium"
-                                               TextColor="#2b2b2b"
-                                               VerticalOptions="Center"
-                                               HorizontalOptions="StartAndExpand"/>
-                                    </StackLayout>
+                                            <!-- Nombre del producto -->
+                                              <Label Text="{Binding Nombre}"
+                                                     FontSize="Medium"
+                                                     TextColor="#2b2b2b"
+                                                     VerticalOptions="Center"
+                                                     HorizontalOptions="StartAndExpand"/>
+                                            <!-- Precio del producto -->
+                                              <Label Text="{Binding Precio, StringFormat='Precio: {0:C}'}"
+                                                     FontSize="Medium"
+                                                     TextColor="#2b2b2b"
+                                                     VerticalOptions="Center"
+                                                     HorizontalOptions="StartAndExpand"/>
+                                            <!-- Botón disminuir -->
+                                              <Button Text="-" 
+                                                      FontSize="Medium" 
+                                                      BackgroundColor="#283593"
+                                                      TextColor="White"
+                                                      Clicked="OnDisminuirCantidadClicked"
+                                                      HorizontalOptions="StartAndExpand"/>
+                                            <!-- Cantidad -->
+                                              <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}"
+                                                     FontSize="Medium"
+                                                     TextColor="#2b2b2b"
+                                                     VerticalOptions="Center"
+                                                     HorizontalOptions="StartAndExpand"/>
+                                            <!-- Botón aumentar -->
+                                              <Button Text="+" 
+                                                      FontSize="Medium" 
+                                                      BackgroundColor="#283593"
+                                                      TextColor="White"
+                                                      Clicked="OnAumentarCantidadClicked"
+                                                      HorizontalOptions="StartAndExpand"/>
+                                            <!-- Subtotal -->
+                                              <Label Text="{Binding Subtotal, StringFormat='Subtotal: {0:C}'}"
+                                                     FontSize="Medium"
+                                                     TextColor="#2b2b2b"
+                                                     VerticalOptions="Center"
+                                                     HorizontalOptions="StartAndExpand"/>
+                                        </StackLayout>
+                                    </Frame>
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>

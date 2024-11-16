@@ -85,10 +85,7 @@ namespace PuntoVenta.Pages
         protected override async void OnAppearing()
         {
             base.OnAppearing();
-            await Dispatcher.DispatchAsync(() =>
-            {
-                CargarProveedores();
-            });
+            await Dispatcher.DispatchAsync(async () => await CargarProveedores());
         }
 
         private void OnCancelarClicked(object sender, EventArgs e)
@@ -108,7 +105,6 @@ namespace PuntoVenta.Pages
             // Desmarcar la selección en la lista
             productosListView.SelectedItem = null;
         }
-
 
         private async Task<List<Producto>> ObtenerProductosAsync()
         {

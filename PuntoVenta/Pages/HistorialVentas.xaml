@@ -32,39 +32,44 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <ViewCell>
-                                    <StackLayout Orientation="Horizontal"
-                                                 Padding="10"
-                                                 Spacing="10"
-                                                 BackgroundColor="#f5f5f5">
-                                        <Label Text="{Binding VentaID, StringFormat='Id venta: {0}'}"
-                                               FontSize="Medium"
-                                               TextColor="#2b2b2b"
-                                               VerticalOptions="Center"
-                                               HorizontalOptions="StartAndExpand"/>
-                                        
-                                        <Label Text="{Binding ClienteID, StringFormat='Id cliente: {0}'}" 
-                                               FontSize="Medium"
-                                               TextColor="#2b2b2b"
-                                               VerticalOptions="Center"
-                                               HorizontalOptions="StartAndExpand"/>
+                                    <Frame BackgroundColor="White" CornerRadius="0">
+                                        <StackLayout Orientation="Horizontal"
+                                                     Padding="10"
+                                                     Spacing="10"
+                                                     BackgroundColor="#f5f5f5">
+                                            <Label Text="{Binding VentaID, StringFormat='Id venta: {0}'}"
+                                                   FontSize="Medium"
+                                                   TextColor="#2b2b2b"
+                                                   VerticalOptions="Center"
+                                                   HorizontalOptions="StartAndExpand"/>
 
-                                        <Label Text="{Binding Productos, StringFormat='Productos: {0}'}"
-                                               FontSize="Medium"
-                                               TextColor="#2b2b2b"
-                                               VerticalOptions="Center"
-                                               HorizontalOptions="StartAndExpand" />
+                                            <Label Text="{Binding ClienteID, StringFormat='Id cliente: {0}'}" 
+                                                   FontSize="Medium"
+                                                   TextColor="#2b2b2b"
+                                                   VerticalOptions="Center"
+                                                   HorizontalOptions="StartAndExpand"/>
 
-                                        <Label Text="{Binding Total, StringFormat='Total: {0:C}'}"
-                                               FontSize="Medium"
-                                               TextColor="#2b2b2b"
-                                               VerticalOptions="Center"
-                                               HorizontalOptions="StartAndExpand"/>
+                                            <Label Text="{Binding Productos, StringFormat='Productos:\n {0}'}"
+                                                   FontSize="Medium"
+                                                   TextColor="#2b2b2b"
+                                                   VerticalOptions="Center"
+                                                   HorizontalOptions="StartAndExpand" />
 
-                                        <Button Text="Eliminar Ticket"
-                                                Clicked="OnEliminarVentaClicked"
-                                                CommandParameter="{Binding VentaID}" />
+                                            <Label Text="{Binding Total, StringFormat='Total: {0:C}'}"
+                                                   FontSize="Medium"
+                                                   TextColor="#2b2b2b"
+                                                   VerticalOptions="Center"
+                                                   HorizontalOptions="StartAndExpand"/>
 
-                                    </StackLayout>
+                                            <Button Text="Eliminar Ticket"
+                                                    FontSize="Medium"
+                                                    BackgroundColor="Orange"
+                                                    TextColor="White"
+                                                    Clicked="OnEliminarVentaClicked"
+                                                    CommandParameter="{Binding VentaID}"
+                                                    HeightRequest="60"/>
+                                        </StackLayout>
+                                    </Frame>
                                 </ViewCell>
                             </DataTemplate>
                         </ListView.ItemTemplate>

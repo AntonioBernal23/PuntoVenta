@@ -79,6 +79,7 @@
                                         <Picker Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2"
                                                 x:Name="ProveedorProductoPickerPc" 
                                                 Title="Proveedor del producto"
+                                                TitleColor="#2b2b2b"
                                                 TextColor="#2b2b2b"
                                                 VerticalOptions="Center"
                                                 BackgroundColor="White"
@@ -108,7 +109,7 @@
 
                                             <!-- Boton para modificar un producto -->
                                             <Button x:Name="EliminarProductoBtnPc"
-                                                    BackgroundColor="#283593"
+                                                    BackgroundColor="Orange"
                                                     HeightRequest="60"
                                                     Text="Eliminar ptoducto"
                                                     TextColor="#fbf6fd"
@@ -131,25 +132,27 @@
                                                 <ListView.ItemTemplate>
                                                     <DataTemplate>
                                                         <ViewCell>
-                                                            <StackLayout Orientation="Horizontal" Padding="10" BackgroundColor="White">
-                                                                <Label Text="{Binding Nombre, StringFormat='Producto: {0}'}"
-                                                                       TextColor="#2b2b2b"
-                                                                       HorizontalOptions="StartAndExpand"
-                                                                       VerticalOptions="Center"
-                                                                       FontSize="Medium" />
+                                                            <Frame BackgroundColor="White" CornerRadius="0">
+                                                                <StackLayout Orientation="Horizontal" Padding="10" BackgroundColor="White">
+                                                                      <Label Text="{Binding Nombre, StringFormat='Producto: {0}'}"
+                                                                             TextColor="#2b2b2b"
+                                                                             HorizontalOptions="StartAndExpand"
+                                                                             VerticalOptions="Center"
+                                                                             FontSize="Medium" />
 
-                                                                <Label Text="{Binding Precio, StringFormat='Precio: {0}'}"
-                                                                       TextColor="#2b2b2b"
-                                                                       HorizontalOptions="StartAndExpand"
-                                                                       VerticalOptions="Center"
-                                                                       FontSize="Medium" />
+                                                                      <Label Text="{Binding Precio, StringFormat='Precio: {0}'}"
+                                                                             TextColor="#2b2b2b"
+                                                                             HorizontalOptions="StartAndExpand"
+                                                                             VerticalOptions="Center"
+                                                                             FontSize="Medium" />
 
-                                                                <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}"
-                                                                       TextColor="#2b2b2b"
-                                                                       HorizontalOptions="StartAndExpand"
-                                                                       VerticalOptions="Center"
-                                                                       FontSize="Medium" />
-                                                            </StackLayout>
+                                                                      <Label Text="{Binding Cantidad, StringFormat='Cantidad: {0}'}"
+                                                                             TextColor="#2b2b2b"
+                                                                             HorizontalOptions="StartAndExpand"
+                                                                             VerticalOptions="Center"
+                                                                             FontSize="Medium" />
+                                                                </StackLayout>
+                                                            </Frame>
                                                         </ViewCell>
                                                     </DataTemplate>
                                                 </ListView.ItemTemplate>

@@ -19,6 +19,12 @@ namespace PuntoVenta.Pages
         string _connectionString = Conexion.ConnectionString;
         ObservableCollection<Empleado> _empleados;
 
+        //Defino propiedades de los botones
+        public Button AgregarEmpleadoBtn { get; private set; }
+        public Button ActualizarInformacionBtn { get; private set; }
+        public Button EliminarEmpleadoBtn { get; private set; }
+        public Button CancelarBtn { get; private set; }
+
         public Administracion()
         {
             InitializeComponent();
@@ -36,10 +42,31 @@ namespace PuntoVenta.Pages
                 UsuarioEntry.Text = empleadoSeleccionado.usuario;
                 ContraseñaEntry.Text = empleadoSeleccionado.contraseña;
 
-                AgregarEmpleadoBtnPc.IsVisible = false;
-                ActualizarInformacionBtnPc.IsVisible = true;
-                EliminarEmpleadoBtnPc.IsVisible = true;
+                AgregarEmpleadoBtn.IsVisible = false;
+                ActualizarInformacionBtn.IsVisible = true;
+                EliminarEmpleadoBtn.IsVisible = true;
+                CancelarBtn.IsVisible = true;
             }
+        }
+
+        //Metodo para deseleccionar elemento de listview
+        private void OnCancelarClicked(object sender, EventArgs e)
+        {
+            // Deseleccionar el elemento del ListView
+            empleadosListView.SelectedItem = null;
+
+            // Limpiar los campos de entrada
+            NombreEntry.Text = string.Empty;
+            ApellidosEntry.Text = string.Empty;
+            UsuarioEntry.Text = string.Empty;
+            ContraseñaEntry.Text = string.Empty;
+
+            // Restaurar visibilidad de los botones
+            AgregarEmpleadoBtn.IsVisible = true;
+            ActualizarInformacionBtn.IsVisible = false;
+            EliminarEmpleadoBtn.IsVisible = false;
+            CancelarBtn.IsVisible = false;
+
         }
 
         // Método para inicializar Entry
@@ -54,6 +81,10 @@ namespace PuntoVenta.Pages
                 UsuarioEntry = (Entry)FindByName("UsuarioEntryMovil");
                 ContraseñaEntry = (Entry)FindByName("ContraseñaEntryMovil");
                 empleadosListView = (ListView)FindByName("empleadosListViewMovil");
+                AgregarEmpleadoBtn = (Button)FindByName("AgregarEmpleadoBtnMovil");
+                ActualizarInformacionBtn = (Button)FindByName("ActualizarInformacionBtnMovil");
+                EliminarEmpleadoBtn = (Button)FindByName("EliminarEmpleadoBtnMovil");
+                CancelarBtn = (Button)FindByName("CancelarBtn");
             }
             else
             {
@@ -62,6 +93,10 @@ namespace PuntoVenta.Pages
                 UsuarioEntry = (Entry)FindByName("UsuarioEntryPc");
                 ContraseñaEntry = (Entry)FindByName("ContraseñaEntryPc");
                 empleadosListView = (ListView)FindByName("empleadosListViewPc");
+                AgregarEmpleadoBtn = (Button)FindByName("AgregarEmpleadoBtnPc");
+                ActualizarInformacionBtn = (Button)FindByName("ActualizarInformacionBtnPc");
+                EliminarEmpleadoBtn = (Button)FindByName("EliminarEmpleadoBtnPc");
+                CancelarBtn = (Button)FindByName("CancelarBtnPc");
             }
 
             empleadosListView.ItemSelected += EmpleadosListView_ItemSelected;
@@ -85,7 +120,6 @@ namespace PuntoVenta.Pages
                 try
                 {
                     await connection.OpenAsync();
-
                     string query = "SELECT nombre, apellidos, usuario FROM empleados";
                     var cmd = new MySqlCommand(query, connection);
 
@@ -137,7 +171,7 @@ namespace PuntoVenta.Pages
 
             if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(apellidos) || string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(contraseña))
             {
-                await DisplayAlert("Error", "Debes llenar todos los campos", "OK");
+                await DisplayAlert("Error", "No puede haber ningún campo vacío.", "OK");
             }
 
             var contraseñaEncriptada = EncriptarContraseña(contraseña);
@@ -227,9 +261,10 @@ namespace PuntoVenta.Pages
                 ContraseñaEntry.Text = string.Empty;
 
                 // Ocultar el botón de actualización y mostrar el de agregar
-                AgregarEmpleadoBtnPc.IsVisible = true;
-                ActualizarInformacionBtnPc.IsVisible = false;
-                EliminarEmpleadoBtnPc.IsVisible = false;
+                AgregarEmpleadoBtn.IsVisible = true;
+                ActualizarInformacionBtn.IsVisible = false;
+                EliminarEmpleadoBtn.IsVisible = false;
+                CancelarBtn.IsVisible = false;
 
                 // Mostrar mensaje de éxito
                 await DisplayAlert("Éxito", "Empleado actualizado correctamente", "OK");
@@ -297,9 +332,10 @@ namespace PuntoVenta.Pages
                     ContraseñaEntry.Text = string.Empty;
 
                     // Ocultar el botón de eliminación y mostrar el de agregar
-                    AgregarEmpleadoBtnPc.IsVisible = true;
-                    ActualizarInformacionBtnPc.IsVisible = false;
-                    EliminarEmpleadoBtnPc.IsVisible = false;
+                    AgregarEmpleadoBtn.IsVisible = true;
+                    ActualizarInformacionBtn.IsVisible = false;
+                    EliminarEmpleadoBtn.IsVisible = false;
+                    CancelarBtn.IsVisible = false;
 
                     // Mostrar mensaje de éxito
                     await DisplayAlert("Éxito", "Empleado eliminado correctamente", "OK");
@@ -333,6 +369,5 @@ namespace PuntoVenta.Pages
                 await DisplayAlert("Error", $"Error al eliminar al empleado: {ex.Message}", "OK");
             }
         }
-
     }
 }

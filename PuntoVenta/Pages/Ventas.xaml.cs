@@ -23,11 +23,11 @@ public partial class Ventas : ContentPage
 
 	private async void OnRealizarVentasClicked(object sender, EventArgs e)
 	{
-
-	}
+        await Navigation.PushAsync(new Pages.RealizarVentas());
+    }
 
 	private async void OnHistorialVentasClicked(object sender, EventArgs e)
 	{
-
-	}
+        await Navigation.PushAsync(new Pages.HistorialVentas());
+    }
 }

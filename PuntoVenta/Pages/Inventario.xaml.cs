@@ -10,17 +10,30 @@ namespace PuntoVenta.Pages
 {
     public partial class Inventario : ContentPage
     {
-        // Variables para los Entrys
-        private Entry NombreProductoEntry, PrecioProductoEntry, CantidadProductoEntry, DescripcionProductoEntry;
-        private List<Picker> ProveedorProductoPickers;
-        private ListView productosListView;
+        // Declaración de Entry
+        public Entry NombreProductoEntry { get; set; } = new Entry();
+        public Entry PrecioProductoEntry { get; set; } = new Entry();
+        public Entry CantidadProductoEntry { get; set; } = new Entry();
+        public Entry DescripcionProductoEntry { get; set; } = new Entry();
 
-        // Conexión a la base de datos
-        private readonly string _connectionString = Conexion.ConnectionString;
-        private ObservableCollection<Producto> _productos = new ObservableCollection<Producto>();
+        // Declaración de Picker
+        public List<Picker> ProveedorProductoPickers;
 
-        // Producto seleccionado para editar o eliminar
-        private Producto productoSeleccionado;
+        // Declaración de ListView
+        public ListView productosListView;
+
+        // Declaración de ObservableCollection de Producto
+        public ObservableCollection<Producto> _productos = new ObservableCollection<Producto>();
+        public Producto productoSeleccionado;
+
+        // Cadena de conexión a base de datos
+        public readonly string _connectionString = Conexion.ConnectionString;
+
+        // Declaración de botones
+        public Button AgregarProductoBtn { get; private set; }
+        public Button ActualizarInformacionBtn { get; private set; }
+        public Button EliminarProductoBtn { get; private set; }
+        public Button CancelarBtn { get; private set; }
 
         public Inventario()
         {
@@ -28,50 +41,26 @@ namespace PuntoVenta.Pages
             InicializarEntrys();
         }
 
-        // Método para obtener el elemento seleccionado del ListView
-        private void ProductosListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
-        {
-            if (e.SelectedItem != null && e.SelectedItem is Producto producto)
-            {
-                productoSeleccionado = producto; // Guardamos el producto seleccionado
-
-                NombreProductoEntry.Text = producto.Nombre;
-                PrecioProductoEntry.Text = producto.Precio.ToString();
-                CantidadProductoEntry.Text = producto.Cantidad.ToString();
-                DescripcionProductoEntry.Text = producto.Descripcion;
-
-                foreach (var picker in ProveedorProductoPickers)
-                {
-                    if (productoSeleccionado.Proveedor != null)
-                    {
-                        picker.SelectedItem = productoSeleccionado.Proveedor;
-                    }
-                }
-
-                // Visibilidad de botones
-                AgregarProductoBtnPc.IsVisible = false;
-                ActualizarInformacionBtnPc.IsVisible = true;
-                EliminarProductoBtnPc.IsVisible = true;
-            }
-        }
-
-        // Inicializa los Entrys y los Pickers
         private async Task InicializarEntrys()
         {
             await Task.Delay(100);
 
-            // Asignación condicional basada en la plataforma
+            // Inicialización basada en plataforma
             if (DeviceInfo.Platform == DevicePlatform.Android || DeviceInfo.Platform == DevicePlatform.iOS)
             {
                 NombreProductoEntry = (Entry)FindByName("NombreProductoEntryMovil");
                 PrecioProductoEntry = (Entry)FindByName("PrecioProductoEntryMovil");
                 CantidadProductoEntry = (Entry)FindByName("CantidadProductoEntryMovil");
                 DescripcionProductoEntry = (Entry)FindByName("DescripcionProductoEntryMovil");
-                ProveedorProductoPickers = new List<Picker>
-                {
-                    (Picker)FindByName("ProveedorProductoPickerMovil")
-                };
+                ProveedorProductoPickers = new List<Picker> { (Picker)FindByName("ProveedorProductoPickerMovil") };
                 productosListView = (ListView)FindByName("productosListViewMovil");
+                AgregarProductoBtn = (Button)FindByName("AgregarProductoBtnMovil");
+                ActualizarInformacionBtn = (Button)FindByName("ActualizarInformacionBtnMovil");
+                EliminarProductoBtn = (Button)FindByName("EliminarProductoBtnMovil");
+                CancelarBtn = (Button)FindByName("CancelarBtnMovil");
+
+                productosListView.ItemSelected += ProductosListView_ItemSelected;
+                await ActualizarListaProductosAsync();
             }
             else
             {
@@ -79,25 +68,48 @@ namespace PuntoVenta.Pages
                 PrecioProductoEntry = (Entry)FindByName("PrecioProductoEntryPc");
                 CantidadProductoEntry = (Entry)FindByName("CantidadProductoEntryPc");
                 DescripcionProductoEntry = (Entry)FindByName("DescripcionProductoEntryPc");
-                ProveedorProductoPickers = new List<Picker>
-                {
-                    (Picker)FindByName("ProveedorProductoPickerPc")
-                };
+                ProveedorProductoPickers = new List<Picker> { (Picker)FindByName("ProveedorProductoPickerPc") };
                 productosListView = (ListView)FindByName("productosListViewPc");
+                AgregarProductoBtn = (Button)FindByName("AgregarProductoBtnPc");
+                ActualizarInformacionBtn = (Button)FindByName("ActualizarInformacionBtnPc");
+                EliminarProductoBtn = (Button)FindByName("EliminarProductoBtnPc");
+                CancelarBtn = (Button)FindByName("CancelarBtnPc");
 
                 productosListView.ItemSelected += ProductosListView_ItemSelected;
-
-                var productos = await ObtenerProductosAsync();
-                foreach (var producto in productos)
-                {
-                    _productos.Add(producto);
-                }
-
-                productosListView.ItemsSource = _productos;
+                await ActualizarListaProductosAsync();
             }
+            await Task.Delay(200);
+            await CargarProveedores();
         }
 
-        // Método para obtener productos desde la base de datos
+        protected override async void OnAppearing()
+        {
+            base.OnAppearing();
+            await Dispatcher.DispatchAsync(() =>
+            {
+                CargarProveedores();
+            });
+        }
+
+        private void OnCancelarClicked(object sender, EventArgs e)
+        {
+            // Asegurarnos de que la actualización de la UI se haga en el hilo principal
+            Dispatcher.DispatchAsync(() =>
+            {
+                ActualizarInformacionBtn.IsVisible = false;
+                EliminarProductoBtn.IsVisible = false;
+                CancelarBtn.IsVisible = false;
+                AgregarProductoBtn.IsVisible = true;
+            });
+
+            // Limpiar campos de texto
+            LimpiarCampos();
+
+            // Desmarcar la selección en la lista
+            productosListView.SelectedItem = null;
+        }
+
+
         private async Task<List<Producto>> ObtenerProductosAsync()
         {
             List<Producto> productos = new List<Producto>();
@@ -114,58 +126,28 @@ namespace PuntoVenta.Pages
                     {
                         while (await reader.ReadAsync())
                         {
-                            var producto = new Producto(
+                            productos.Add(new Producto(
                                 reader["nombre"].ToString(),
                                 Convert.ToDecimal(reader["precio"]),
                                 Convert.ToInt32(reader["cantidad"]),
                                 reader["descripcion"].ToString(),
                                 reader["proveedor"].ToString()
-                            );
-
-                            productos.Add(producto);
+                            ));
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    await DisplayAlert("Error", $"Error al obtener el producto: {ex.Message}", "OK");
+                    await DisplayAlert("Error", $"Error al obtener los productos: {ex.Message}", "OK");
                 }
             }
             return productos;
         }
 
-        // Evento OnAppearing: Carga los proveedores cuando la página aparece
-        protected override async void OnAppearing()
-        {
-            base.OnAppearing();
-            await CargarProveedores();
-        }
-
-        // Cargar proveedores desde la base de datos
-        private async Task CargarProveedores()
-        {
-            var proveedores = await ObtenerProveedoresAsync();
-            if (proveedores != null && proveedores.Count > 0)
-            {
-                foreach (var picker in ProveedorProductoPickers)
-                {
-                    picker.Items.Clear();
-                    foreach (var proveedor in proveedores)
-                    {
-                        picker.Items.Add(proveedor);
-                    }
-                }
-            }
-            else
-            {
-                await DisplayAlert("Error", "No se encontraron proveedores.", "OK");
-            }
-        }
-
-        // Obtener proveedores desde la base de datos
         private async Task<List<string>> ObtenerProveedoresAsync()
         {
             var proveedores = new List<string>();
+
             try
             {
                 using (var connection = new MySqlConnection(_connectionString))
@@ -173,14 +155,11 @@ namespace PuntoVenta.Pages
                     await connection.OpenAsync();
                     var query = "SELECT nombre FROM proveedores";
                     using (var command = new MySqlCommand(query, connection))
+                    using (var reader = await command.ExecuteReaderAsync())
                     {
-                        using (var reader = await command.ExecuteReaderAsync())
+                        while (await reader.ReadAsync())
                         {
-                            while (await reader.ReadAsync())
-                            {
-                                var proveedor = reader.GetString(0);
-                                proveedores.Add(!string.IsNullOrEmpty(proveedor) ? proveedor : "Proveedor desconocido");
-                            }
+                            proveedores.Add(reader.GetString(0) ?? "Proveedor desconocido");
                         }
                     }
                 }
@@ -189,112 +168,62 @@ namespace PuntoVenta.Pages
             {
                 await DisplayAlert("Error", $"Error al cargar proveedores: {ex.Message}", "OK");
             }
+
             return proveedores;
         }
 
-        // Evento al hacer clic en el botón "Agregar Producto"
         private async void OnAgregarProductoClicked(object sender, EventArgs e)
         {
-            string nombre = NombreProductoEntry?.Text?.Trim();
-            string precioTexto = PrecioProductoEntry?.Text?.Trim();
-            string cantidadTexto = CantidadProductoEntry?.Text?.Trim();
-            string descripcion = DescripcionProductoEntry?.Text?.Trim();
-            string proveedor = ObtenerProveedorSeleccionado()?.Trim();
-
-            if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(precioTexto) ||
-                string.IsNullOrEmpty(cantidadTexto) || string.IsNullOrEmpty(descripcion) || string.IsNullOrEmpty(proveedor))
+            if (ValidarCampos(out Producto nuevoProducto))
             {
-                await DisplayAlert("Error", "No puede haber ningún campo vacío.", "OK");
-                return;
-            }
+                //modificar botones
+                ActualizarInformacionBtn.IsVisible = false;
+                EliminarProductoBtn.IsVisible = false;
+                CancelarBtn.IsVisible = false;
+                AgregarProductoBtn.IsVisible = true;
 
-            if (!int.TryParse(cantidadTexto, out int cantidad) || !decimal.TryParse(precioTexto, out decimal precio))
-            {
-                await DisplayAlert("Error", "Verifique que la cantidad sea un número entero y el precio un número válido.", "OK");
-                return;
-            }
-
-            Producto nuevoProducto = new Producto(nombre, precio, cantidad, descripcion, proveedor);
-            await InsertarProductoAsync(nuevoProducto);
-            ObtenerProductosAsync();
-        }
-
-        // Método para insertar producto en la base de datos
-        private async Task InsertarProductoAsync(Producto producto)
-        {
-            try
-            {
-                using (var connection = new MySqlConnection(_connectionString))
-                {
-                    await connection.OpenAsync();
-                    var query = "INSERT INTO inventario (nombre, precio, cantidad, descripcion, proveedor) VALUES (@nombre, @precio, @cantidad, @descripcion, @proveedor)";
-                    using (var command = new MySqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@nombre", producto.Nombre);
-                        command.Parameters.AddWithValue("@precio", producto.Precio);
-                        command.Parameters.AddWithValue("@cantidad", producto.Cantidad);
-                        command.Parameters.AddWithValue("@descripcion", producto.Descripcion);
-                        command.Parameters.AddWithValue("@proveedor", producto.Proveedor);
-                        await command.ExecuteNonQueryAsync();
-                    }
-                }
-                await DisplayAlert("Éxito", "Producto agregado correctamente.", "OK");
-                LimpiarCampos();
+                await EjecutarOperacionProductoAsync(nuevoProducto, "INSERT INTO inventario (nombre, precio, cantidad, descripcion, proveedor) VALUES (@nombre, @precio, @cantidad, @descripcion, @proveedor)", "Producto agregado correctamente.");
                 await ActualizarListaProductosAsync();
-                _productos.Add(producto);
-            }
-            catch (Exception ex)
-            {
-                await DisplayAlert("Error", $"Error al agregar el producto: {ex.Message}", "OK");
             }
         }
 
-        // Método para actualizar producto
         private async void OnActualizarInformacionClicked(object sender, EventArgs e)
         {
-            if (productoSeleccionado == null)
+            if (productoSeleccionado != null && ValidarCampos(out Producto productoActualizado))
             {
-                await DisplayAlert("Error", "Seleccione un producto para actualizar.", "OK");
-                return;
+                //modificar botones
+                ActualizarInformacionBtn.IsVisible = false;
+                EliminarProductoBtn.IsVisible = false;
+                CancelarBtn.IsVisible = false;
+                AgregarProductoBtn.IsVisible = true;
+
+                await EjecutarOperacionProductoAsync(productoActualizado, "UPDATE inventario SET precio=@precio, cantidad=@cantidad, descripcion=@descripcion, proveedor=@proveedor WHERE nombre=@nombre", "Producto actualizado correctamente.");
+                await ActualizarListaProductosAsync();
             }
-
-            string nombre = NombreProductoEntry?.Text?.Trim();
-            string precioTexto = PrecioProductoEntry?.Text?.Trim();
-            string cantidadTexto = CantidadProductoEntry?.Text?.Trim();
-            string descripcion = DescripcionProductoEntry?.Text?.Trim();
-            string proveedor = ObtenerProveedorSeleccionado()?.Trim();
-
-            if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(precioTexto) ||
-                string.IsNullOrEmpty(cantidadTexto) || string.IsNullOrEmpty(descripcion) || string.IsNullOrEmpty(proveedor))
-            {
-                await DisplayAlert("Error", "No puede haber ningún campo vacío.", "OK");
-                return;
-            }
-
-            if (!int.TryParse(cantidadTexto, out int cantidad) || !decimal.TryParse(precioTexto, out decimal precio))
-            {
-                await DisplayAlert("Error", "Verifique que la cantidad sea un número entero y el precio un número válido.", "OK");
-                return;
-            }
-
-            productoSeleccionado.Nombre = nombre;
-            productoSeleccionado.Precio = precio;
-            productoSeleccionado.Cantidad = cantidad;
-            productoSeleccionado.Descripcion = descripcion;
-            productoSeleccionado.Proveedor = proveedor;
-
-            await ActualizarProductoAsync(productoSeleccionado);
         }
 
-        // Método para actualizar la base de datos
-        private async Task ActualizarProductoAsync(Producto producto)
+        private async void OnEliminarProductoClicked(object sender, EventArgs e)
+        {
+            if (productoSeleccionado != null && await DisplayAlert("Confirmación", $"¿Está seguro de eliminar el producto '{productoSeleccionado.Nombre}'?", "Sí", "No"))
+            {
+                //modificar botones
+                ActualizarInformacionBtn.IsVisible = false;
+                EliminarProductoBtn.IsVisible = false;
+                CancelarBtn.IsVisible = false;
+                AgregarProductoBtn.IsVisible = true;
+
+                await EjecutarOperacionProductoAsync(productoSeleccionado, "DELETE FROM inventario WHERE nombre=@nombre", "Producto eliminado correctamente.");
+                await ActualizarListaProductosAsync();
+            }
+        }
+
+        private async Task EjecutarOperacionProductoAsync(Producto producto, string query, string mensajeExito)
         {
             try
             {
                 using (var connection = new MySqlConnection(_connectionString))
                 {
                     await connection.OpenAsync();
-                    var query = "UPDATE inventario SET nombre = @nombre, precio = @precio, cantidad = @cantidad, descripcion = @descripcion, proveedor = @proveedor WHERE nombre = @nombre";
                     using (var command = new MySqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@nombre", producto.Nombre);
@@ -305,109 +234,112 @@ namespace PuntoVenta.Pages
                         await command.ExecuteNonQueryAsync();
                     }
                 }
-                await DisplayAlert("Éxito", "Producto actualizado correctamente.", "OK");
+                await DisplayAlert("Éxito", mensajeExito, "OK");
                 LimpiarCampos();
-                await ActualizarListaProductosAsync();
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Error", $"Error al actualizar el producto: {ex.Message}", "OK");
+                await DisplayAlert("Error", $"Error en la operación: {ex.Message}", "OK");
             }
         }
 
-        // Método para eliminar producto
-        private async void OnEliminarProductoClicked(object sender, EventArgs e)
+        private async Task ActualizarListaProductosAsync()
         {
-            if (productoSeleccionado == null)
+            _productos.Clear();
+            var productos = await Task.Run(() => ObtenerProductosAsync());
+            await Dispatcher.DispatchAsync(() =>
             {
-                await DisplayAlert("Error", "Seleccione un producto para eliminar.", "OK");
+                productos.ForEach(producto => _productos.Add(producto));
+                productosListView.ItemsSource = _productos;
+            });
+        }
+
+        private async Task CargarProveedores()
+        {
+            if (ProveedorProductoPickers == null || ProveedorProductoPickers.Count == 0)
+            {
+                await Task.Delay(100);
                 return;
             }
 
-            bool confirmacion = await DisplayAlert("Confirmación", $"¿Está seguro de eliminar el producto '{productoSeleccionado.Nombre}'?", "Sí", "No");
-
-            if (confirmacion)
+            var proveedores = await Task.Run(() => ObtenerProveedoresAsync());
+            if (proveedores.Count > 0)
             {
-                await EliminarProductoAsync(productoSeleccionado);
-            }
-        }
-
-        // Método para eliminar producto de la base de datos
-        private async Task EliminarProductoAsync(Producto producto)
-        {
-            try
-            {
-                using (var connection = new MySqlConnection(_connectionString))
+                await Dispatcher.DispatchAsync(() =>
                 {
-                    await connection.OpenAsync();
-                    var query = "DELETE FROM inventario WHERE nombre = @nombre";
-                    using (var command = new MySqlCommand(query, connection))
+                    foreach (var picker in ProveedorProductoPickers)
                     {
-                        command.Parameters.AddWithValue("@nombre", producto.Nombre);
-                        await command.ExecuteNonQueryAsync();
+                        picker.Items.Clear();
+                        proveedores.ForEach(proveedor => picker.Items.Add(proveedor));
                     }
-                }
-                await DisplayAlert("Éxito", "Producto eliminado correctamente.", "OK");
-                await ActualizarListaProductosAsync();
-                LimpiarCampos();
+                });
             }
-            catch (Exception ex)
+            else
             {
-                await DisplayAlert("Error", $"Error al eliminar el producto: {ex.Message}", "OK");
+                await DisplayAlert("Error", "No se encontraron proveedores.", "OK");
             }
         }
 
-        // Limpiar los campos después de una acción
+        private void ProductosListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
+        {
+            //Modificar botones
+            AgregarProductoBtn.IsVisible = false;
+            ActualizarInformacionBtn.IsVisible = true;
+            EliminarProductoBtn.IsVisible = true;
+            CancelarBtn.IsVisible = true;
+
+            if (e.SelectedItem is Producto producto)
+            {
+                productoSeleccionado = producto;
+                NombreProductoEntry.Text = producto.Nombre;
+                PrecioProductoEntry.Text = producto.Precio.ToString();
+                CantidadProductoEntry.Text = producto.Cantidad.ToString();
+                DescripcionProductoEntry.Text = producto.Descripcion;
+                // Selección del proveedor
+                if (ProveedorProductoPickers != null && ProveedorProductoPickers.Count > 0)
+                {
+                    var picker = ProveedorProductoPickers[0];
+                    picker.SelectedItem = producto.Proveedor;
+                }
+            }
+        }
+
         private void LimpiarCampos()
         {
             NombreProductoEntry.Text = string.Empty;
             PrecioProductoEntry.Text = string.Empty;
             CantidadProductoEntry.Text = string.Empty;
             DescripcionProductoEntry.Text = string.Empty;
-
-            AgregarProductoBtnPc.IsVisible = true;
-            ActualizarInformacionBtnPc.IsVisible = false;
-            EliminarProductoBtnPc.IsVisible = false;
-        }
-
-        // Método para obtener proveedor seleccionado
-        private string ObtenerProveedorSeleccionado()
-        {
             foreach (var picker in ProveedorProductoPickers)
             {
-                if (picker.SelectedItem != null)
-                {
-                    return picker.SelectedItem.ToString();
-                }
+                picker.SelectedItem = null;
             }
-            return string.Empty;
+            productoSeleccionado = null;
         }
 
-        private async Task ActualizarListaProductosAsync()
+        private bool ValidarCampos(out Producto producto)
         {
-            try
+            producto = null;
+            if (string.IsNullOrWhiteSpace(NombreProductoEntry.Text) ||
+                string.IsNullOrWhiteSpace(PrecioProductoEntry.Text) ||
+                string.IsNullOrWhiteSpace(CantidadProductoEntry.Text) ||
+                string.IsNullOrWhiteSpace(DescripcionProductoEntry.Text) ||
+                ProveedorProductoPickers[0].SelectedItem == null)
             {
-                // Obtener los productos actualizados desde la base de datos
-                var productos = await ObtenerProductosAsync();
-
-                // Limpiar la colección actual
-                _productos.Clear();
-
-                // Agregar los productos obtenidos a la colección
-                foreach (var producto in productos)
-                {
-                    _productos.Add(producto);
-                }
-
-                // Volver a asignar la colección al ListView (esto también actualiza la UI)
-                productosListView.ItemsSource = null;
-                productosListView.ItemsSource = _productos;
+                DisplayAlert("Error", "Todos los campos son obligatorios.", "OK");
+                return false;
             }
-            catch (Exception ex)
+
+            decimal precio;
+            int cantidad;
+            if (!decimal.TryParse(PrecioProductoEntry.Text, out precio) || !int.TryParse(CantidadProductoEntry.Text, out cantidad))
             {
-                await DisplayAlert("Error", $"Error al actualizar la lista de productos: {ex.Message}", "OK");
+                DisplayAlert("Error", "El precio y la cantidad deben ser números válidos.", "OK");
+                return false;
             }
+
+            producto = new Producto(NombreProductoEntry.Text, precio, cantidad, DescripcionProductoEntry.Text, ProveedorProductoPickers[0].SelectedItem.ToString());
+            return true;
         }
-
     }
 }

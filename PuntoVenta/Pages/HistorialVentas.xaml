@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="PuntoVenta.Pages.HistorialVentas"
+             Title="HistorialVentas"
+             NavigationPage.HasNavigationBar="False">
+    
+    <!-- Grid principal -->
+    <Grid RowDefinitions=".2*,.8*">
+        
+        <!-- Primera parte del grid principal -->
+        <Grid BackgroundColor="#2196f3">
+            <ContentView HorizontalOptions="Center">
+                <Label Text="Historial de ventas" TextColor="White" FontSize="50" FontFamily="bold" />
+            </ContentView>
+        </Grid>
+        
+        <!-- Segunda parte del grid principal -->
+        <Grid Grid.Row="1" BackgroundColor="Transparent">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*" />
+            </Grid.RowDefinitions>
+            
+            <RoundRectangle CornerRadius="30,30,0,0"
+                Fill="White"
+                HorizontalOptions="FillAndExpand"
+                VerticalOptions="FillAndExpand" />
+
+            <VerticalStackLayout Padding="20" BackgroundColor="#edebf6">
+                <ScrollView>
+                    <ListView x:Name="VentasListView">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <ViewCell>
+                                    <StackLayout Orientation="Horizontal"
+                                                 Padding="10"
+                                                 Spacing="10"
+                                                 BackgroundColor="#f5f5f5">
+                                        <Label Text="{Binding VentaID, StringFormat='Id venta: {0}'}"
+                                               FontSize="Medium"
+                                               TextColor="#2b2b2b"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="StartAndExpand"/>
+                                        
+                                        <Label Text="{Binding ClienteID, StringFormat='Id cliente: {0}'}" 
+                                               FontSize="Medium"
+                                               TextColor="#2b2b2b"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="StartAndExpand"/>
+
+                                        <Label Text="{Binding Productos, StringFormat='Productos: {0}'}"
+                                               FontSize="Medium"
+                                               TextColor="#2b2b2b"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="StartAndExpand" />
+
+                                        <Label Text="{Binding Total, StringFormat='Total: {0:C}'}"
+                                               FontSize="Medium"
+                                               TextColor="#2b2b2b"
+                                               VerticalOptions="Center"
+                                               HorizontalOptions="StartAndExpand"/>
+
+                                        <Button Text="Eliminar Ticket"
+                                                Clicked="OnEliminarVentaClicked"
+                                                CommandParameter="{Binding VentaID}" />
+
+                                    </StackLayout>
+                                </ViewCell>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                </ScrollView>
+            </VerticalStackLayout>
+        </Grid>
+    </Grid>
+    
+</ContentPage>

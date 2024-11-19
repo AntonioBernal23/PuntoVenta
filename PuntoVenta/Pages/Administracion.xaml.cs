@@ -55,11 +55,7 @@ namespace PuntoVenta.Pages
             // Deseleccionar el elemento del ListView
             empleadosListView.SelectedItem = null;
 
-            // Limpiar los campos de entrada
-            NombreEntry.Text = string.Empty;
-            ApellidosEntry.Text = string.Empty;
-            UsuarioEntry.Text = string.Empty;
-            ContraseñaEntry.Text = string.Empty;
+            LimpiarCampos();
 
             // Restaurar visibilidad de los botones
             AgregarEmpleadoBtn.IsVisible = true;
@@ -198,15 +194,20 @@ namespace PuntoVenta.Pages
                     }
                 }
 
-                // Recargar la lista de empleados
-                _empleados.Clear();
                 var empleados = await ObtenerEmpleadosAsync();
-                foreach (var empleado in empleados)
-                {
-                    _empleados.Add(empleado);
-                }
 
-                empleadosListView.ItemsSource = _empleados;
+                // Recargar la lista de empleados
+                Device.BeginInvokeOnMainThread(() =>
+                {
+                    _empleados.Clear();
+                    foreach (var empleado in empleados)
+                    {
+                        _empleados.Add(empleado);
+                    }
+                    empleadosListView.ItemsSource = _empleados;
+                });
+
+                LimpiarCampos();
 
                 await DisplayAlert("Exito", "Empleado agregado correctamente", "OK");
             }
@@ -254,11 +255,7 @@ namespace PuntoVenta.Pages
                 //Deseleccionar elemento del listview
                 empleadosListView.SelectedItem = null;
 
-                // Limpiar los campos de entrada
-                NombreEntry.Text = string.Empty;
-                ApellidosEntry.Text = string.Empty;
-                UsuarioEntry.Text = string.Empty;
-                ContraseñaEntry.Text = string.Empty;
+                LimpiarCampos();
 
                 // Ocultar el botón de actualización y mostrar el de agregar
                 AgregarEmpleadoBtn.IsVisible = true;
@@ -325,11 +322,7 @@ namespace PuntoVenta.Pages
                     // Deseleccionar el elemento del ListView
                     empleadosListView.SelectedItem = null;
 
-                    // Limpiar los campos de entrada
-                    NombreEntry.Text = string.Empty;
-                    ApellidosEntry.Text = string.Empty;
-                    UsuarioEntry.Text = string.Empty;
-                    ContraseñaEntry.Text = string.Empty;
+                    LimpiarCampos();
 
                     // Ocultar el botón de eliminación y mostrar el de agregar
                     AgregarEmpleadoBtn.IsVisible = true;
@@ -368,6 +361,15 @@ namespace PuntoVenta.Pages
             {
                 await DisplayAlert("Error", $"Error al eliminar al empleado: {ex.Message}", "OK");
             }
+        }
+
+        //Limpiar campos de entrada
+        private async void LimpiarCampos()
+        {
+            NombreEntry.Text = string.Empty;
+            ApellidosEntry.Text = string.Empty;
+            UsuarioEntry.Text = string.Empty;
+            ContraseñaEntry.Text = string.Empty;
         }
     }
 }

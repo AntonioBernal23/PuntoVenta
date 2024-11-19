@@ -8,9 +8,10 @@ public partial class Clientes : ContentPage
     public readonly string _connectionString = Conexion.ConnectionString;
 
     public Clientes()
-	{
-		InitializeComponent();
-	}
+    {
+        InitializeComponent();
+        ForceLayout();
+    }
 
     protected override async void OnAppearing()
     {
@@ -18,22 +19,22 @@ public partial class Clientes : ContentPage
         ClientesListView.ItemsSource = await ObtenerClientesAsync();
     }
 
-	private async Task<List<ClientesEnBd>> ObtenerClientesAsync()
-	{
-		var ClientesEnBd = new List<ClientesEnBd>();
+    private async Task<List<ClientesEnBd>> ObtenerClientesAsync()
+    {
+        var ClientesEnBd = new List<ClientesEnBd>();
 
-		using (var connection = new MySqlConnection(_connectionString))
-		{
-			await connection.OpenAsync();
+        using (var connection = new MySqlConnection(_connectionString))
+        {
+            await connection.OpenAsync();
 
-			string query = "SELECT * FROM clientes;"; 
+            string query = "SELECT * FROM clientes;";
 
-			using (var cmd = new MySqlCommand(query, connection))
-			{
-				using (var reader = await cmd.ExecuteReaderAsync())
-				{
-					while (await reader.ReadAsync())
-					{
+            using (var cmd = new MySqlCommand(query, connection))
+            {
+                using (var reader = await cmd.ExecuteReaderAsync())
+                {
+                    while (await reader.ReadAsync())
+                    {
                         var cliente = new ClientesEnBd
                         {
                             ClienteId = reader.GetInt32(0),
@@ -43,18 +44,18 @@ public partial class Clientes : ContentPage
                         };
                         ClientesEnBd.Add(cliente); // Agregar el cliente a la lista
                     }
-				}
-			}
-		}
-		return ClientesEnBd;
-	}
+                }
+            }
+        }
+        return ClientesEnBd;
+    }
 
     public class ClientesEnBd
-	{
-		public int ClienteId { get; set; }
-		public string Nombre { get; set; }
-		public string Apellidos { get; set; }
-		public string Ceular { get; set; }
+    {
+        public int ClienteId { get; set; }
+        public string Nombre { get; set; }
+        public string Apellidos { get; set; }
+        public string Ceular { get; set; }
 
-	}
+    }
 }

@@ -151,14 +151,15 @@
                     <On Platform="Android, iOS">
                         <VerticalStackLayout HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand">
                             <ScrollView>
-                                <Label Text="Empleados"
+                                <StackLayout>
+                                    <Label Text="Empleados"
                                        TextColor="#283593"
                                        FontFamily="bold"
                                        FontSize="Large"
                                        HorizontalOptions="Center" />
 
-                                <!-- Entry para el nombre -->
-                                <Entry x:Name="NombreEntryMovil"
+                                    <!-- Entry para el nombre -->
+                                    <Entry x:Name="NombreEntryMovil"
                                        Placeholder="Nombre del empleado"
                                        TextColor="#2d2d2d"
                                        VerticalOptions="Center"
@@ -166,8 +167,8 @@
                                        FontFamily="medium"
                                        Margin="5" />
 
-                                <!-- Entry para apellidos -->
-                                <Entry x:Name="ApellidosEntryMovil"
+                                    <!-- Entry para apellidos -->
+                                    <Entry x:Name="ApellidosEntryMovil"
                                        Placeholder="Apellidos del empleado"
                                        TextColor="#2d2d2d"
                                        VerticalOptions="Center"
@@ -175,8 +176,8 @@
                                        FontFamily="medium"
                                        Margin="5" />
 
-                                <!-- Entry para el usuario -->
-                                <Entry x:Name="UsuarioEntryMovil"
+                                    <!-- Entry para el usuario -->
+                                    <Entry x:Name="UsuarioEntryMovil"
                                        Placeholder="Usuario del empleado"
                                        TextColor="#2d2d2d"
                                        VerticalOptions="Center"
@@ -184,8 +185,8 @@
                                        FontFamily="medium"
                                        Margin="5" />
 
-                                <!-- Entry para la contraseña -->
-                                <Entry x:Name="ContraseñaEntryMovil"
+                                    <!-- Entry para la contraseña -->
+                                    <Entry x:Name="ContraseñaEntryMovil"
                                        Placeholder="Contraseña del empleado"
                                        TextColor="#2d2d2d"
                                        VerticalOptions="Center"
@@ -193,7 +194,7 @@
                                        FontFamily="medium"
                                        Margin="5" />
 
-                                <Button x:Name="AgregarEmpleadoBtnMovil"
+                                    <Button x:Name="AgregarEmpleadoBtnMovil"
                                         BackgroundColor="#283593"
                                         HeightRequest="60"
                                         Text="Agregar Empleado"
@@ -201,7 +202,7 @@
                                         Clicked="OnAgregarEmpleadoClicked"
                                         Margin="5" />
 
-                                <Button x:Name="ActualizarInformacionBtnMovil"
+                                    <Button x:Name="ActualizarInformacionBtnMovil"
                                         BackgroundColor="#283593"
                                         HeightRequest="60"
                                         Text="Actualizar información"
@@ -210,7 +211,7 @@
                                         Margin="5"
                                         IsVisible="False" />
 
-                                <Button x:Name="EliminarEmpleadoBtnMovil"
+                                    <Button x:Name="EliminarEmpleadoBtnMovil"
                                         BackgroundColor="#283593"
                                         HeightRequest="60"
                                         Text="Eliminar empleado"
@@ -219,7 +220,7 @@
                                         Margin="5"
                                         IsVisible="False" />
 
-                                <Button x:Name="CancelarBtnMovil"
+                                    <Button x:Name="CancelarBtnMovil"
                                         BackgroundColor="Red"
                                         HeightRequest="60"
                                         Text="Cancelar"
@@ -228,13 +229,36 @@
                                         Margin="5"
                                         IsVisible="False" />
 
-                                <ListView x:Name="empleadosListViewMovil">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <TextCell Text="{Binding nombre}" Detail="{Binding usuario}" TextColor="Black" />
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>
+                                    <ListView x:Name="empleadosListViewMovil">
+                                        <ListView.ItemTemplate>
+                                            <DataTemplate>
+                                                <ViewCell>
+                                                    <Frame BackgroundColor="White" CornerRadius="0">
+                                                        <StackLayout Orientation="Horizontal" Padding="10">
+                                                            <Label Text="{Binding nombre, StringFormat='Nombre: {0}'}"
+                                                                   TextColor="#2b2b2b"
+                                                                   FontSize="Medium"
+                                                                   HorizontalOptions="StartAndExpand"
+                                                                   VerticalOptions="Center" />
+
+                                                            <Label Text="{Binding apellidos,StringFormat='Apellidos: {0}'}"
+                                                                   TextColor="#2b2b2b"
+                                                                   FontSize="Medium"
+                                                                   HorizontalOptions="StartAndExpand"
+                                                                   VerticalOptions="Center" />
+
+                                                            <Label Text="{Binding usuario, StringFormat='Usuario: {0}'}"
+                                                                   TextColor="#2b2b2b"
+                                                                   FontSize="Medium"
+                                                                   HorizontalOptions="StartAndExpand"
+                                                                   VerticalOptions="Center" />
+                                                        </StackLayout>
+                                                    </Frame>
+                                                </ViewCell>
+                                            </DataTemplate>
+                                        </ListView.ItemTemplate>
+                                    </ListView>
+                                </StackLayout>
                             </ScrollView>
                         </VerticalStackLayout>
                     </On>

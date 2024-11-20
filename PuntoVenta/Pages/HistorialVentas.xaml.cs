@@ -39,7 +39,7 @@ public partial class HistorialVentas : ContentPage
                 GROUP_CONCAT(CONCAT(p.nombre, ' (Cantidad: ', dv.Cantidad, ')') SEPARATOR ', ') AS Productos,
                 SUM(dv.Subtotal) AS Total
             FROM 
-                detalleVentas dv
+                detalleventas dv
             JOIN 
                 inventario p ON dv.ProductoID = p.idProducto
             GROUP BY 
@@ -98,7 +98,7 @@ public partial class HistorialVentas : ContentPage
                 try
                 {
                     // Eliminar las entradas de detalleVentas
-                    string deleteDetalleQuery = "DELETE FROM detalleVentas WHERE VentaID = @VentaID";
+                    string deleteDetalleQuery = "DELETE FROM detalleventas WHERE VentaID = @VentaID";
                     using (var cmd = new MySqlCommand(deleteDetalleQuery, connection, (MySqlTransaction)transaction))
                     {
                         cmd.Parameters.AddWithValue("@VentaID", ventaId);

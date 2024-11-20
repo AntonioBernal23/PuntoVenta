@@ -295,7 +295,7 @@ namespace PuntoVenta.Pages
                     var productoId = Convert.ToInt32(await cmdProductoId.ExecuteScalarAsync());
 
                     // Insertar detalle de la venta
-                    var queryDetalle = @"INSERT INTO detalleVentas 
+                    var queryDetalle = @"INSERT INTO detalleventas 
                                  (VentaID, ClienteID, ProductoID, Cantidad, Subtotal) 
                                  VALUES (@VentaID, @ClienteID, @ProductoID, @Cantidad, @Subtotal);";
                     var cmdDetalle = new MySqlCommand(queryDetalle, connection);

@@ -14,7 +14,7 @@
                 <Label Text="Ventas" 
                        TextColor="White" 
                        FontSize="50" 
-                       FontFamily="Bold" 
+                       FontFamily="bold" 
                        HorizontalOptions="Center" />
             </ContentView>
         </Grid>

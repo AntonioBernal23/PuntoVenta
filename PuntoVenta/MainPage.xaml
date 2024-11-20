@@ -6,11 +6,12 @@
              NavigationPage.HasNavigationBar="False">
     
     <Grid RowDefinitions=".3*,.7*">
-        <Image Aspect="AspectFill"
-               Source="#" />
-
-        <Grid BackgroundColor="#2196f3"
-              Opacity=".5" />
+        <Grid BackgroundColor="#2196f3"/>
+        
+        <Image Aspect="AspectFit"
+               Source="ods.png"
+               HorizontalOptions="CenterAndExpand"
+               VerticalOptions="CenterAndExpand"/>
 
         <Grid Grid.Row="1">
             <RoundRectangle Margin="-5, -30, -5, -2"

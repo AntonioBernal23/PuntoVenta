@@ -13,30 +13,22 @@ namespace PuntoVenta.Pages
 {
     public partial class Administracion : ContentPage
     {
-        private Entry NombreEntry, ApellidosEntry, UsuarioEntry, ContraseñaEntry;
-        private ListView empleadosListView;
-
         string _connectionString = Conexion.ConnectionString;
         ObservableCollection<Empleado> _empleados;
-
-        //Defino propiedades de los botones
-        public Button AgregarEmpleadoBtn { get; private set; }
-        public Button ActualizarInformacionBtn { get; private set; }
-        public Button EliminarEmpleadoBtn { get; private set; }
-        public Button CancelarBtn { get; private set; }
 
         public Administracion()
         {
             InitializeComponent();
             _empleados = new ObservableCollection<Empleado>();
-            InicializarEntrys();
+            InicializarComponentes();
         }
 
         //Metodo para obtener elemento seleccionado del listview
         private void EmpleadosListView_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            if(e.SelectedItem != null && e.SelectedItem is Empleado empleadoSeleccionado)
+            if (e.SelectedItem != null && e.SelectedItem is Empleado empleadoSeleccionado)
             {
+                Console.WriteLine($"Empleado seleccionado: {empleadoSeleccionado.nombre}");
                 NombreEntry.Text = empleadoSeleccionado.nombre;
                 ApellidosEntry.Text = empleadoSeleccionado.apellidos;
                 UsuarioEntry.Text = empleadoSeleccionado.usuario;
@@ -47,6 +39,20 @@ namespace PuntoVenta.Pages
                 EliminarEmpleadoBtn.IsVisible = true;
                 CancelarBtn.IsVisible = true;
             }
+        }
+
+        private bool isPageVisible = false;
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            isPageVisible = true; // La página está visible
+        }
+
+        protected override void OnDisappearing()
+        {
+            base.OnDisappearing();
+            isPageVisible = false; // La página está desapareciendo
         }
 
         //Metodo para deseleccionar elemento de listview
@@ -66,36 +72,9 @@ namespace PuntoVenta.Pages
         }
 
         // Método para inicializar Entry
-        private async Task InicializarEntrys()
+        private async Task InicializarComponentes()
         {
             await Task.Delay(100);
-
-            if (DeviceInfo.Platform == DevicePlatform.Android || DeviceInfo.Platform == DevicePlatform.iOS)
-            {
-                NombreEntry = (Entry)FindByName("NombreEntryMovil");
-                ApellidosEntry = (Entry)FindByName("ApellidosEntryMovil");
-                UsuarioEntry = (Entry)FindByName("UsuarioEntryMovil");
-                ContraseñaEntry = (Entry)FindByName("ContraseñaEntryMovil");
-                empleadosListView = (ListView)FindByName("empleadosListViewMovil");
-                AgregarEmpleadoBtn = (Button)FindByName("AgregarEmpleadoBtnMovil");
-                ActualizarInformacionBtn = (Button)FindByName("ActualizarInformacionBtnMovil");
-                EliminarEmpleadoBtn = (Button)FindByName("EliminarEmpleadoBtnMovil");
-                CancelarBtn = (Button)FindByName("CancelarBtn");
-            }
-            else
-            {
-                NombreEntry = (Entry)FindByName("NombreEntryPc");
-                ApellidosEntry = (Entry)FindByName("ApellidosEntryPc");
-                UsuarioEntry = (Entry)FindByName("UsuarioEntryPc");
-                ContraseñaEntry = (Entry)FindByName("ContraseñaEntryPc");
-                empleadosListView = (ListView)FindByName("empleadosListViewPc");
-                AgregarEmpleadoBtn = (Button)FindByName("AgregarEmpleadoBtnPc");
-                ActualizarInformacionBtn = (Button)FindByName("ActualizarInformacionBtnPc");
-                EliminarEmpleadoBtn = (Button)FindByName("EliminarEmpleadoBtnPc");
-                CancelarBtn = (Button)FindByName("CancelarBtnPc");
-            }
-
-            empleadosListView.ItemSelected += EmpleadosListView_ItemSelected;
 
             var empleados = await ObtenerEmpleadosAsync();
             foreach (var entry in empleados)
@@ -149,7 +128,7 @@ namespace PuntoVenta.Pages
             {
                 var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(contraseña));
                 var builder = new StringBuilder();
-                foreach(var b in bytes)
+                foreach (var b in bytes)
                 {
                     builder.Append(b.ToString("x2"));
                 }
@@ -168,6 +147,7 @@ namespace PuntoVenta.Pages
             if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(apellidos) || string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(contraseña))
             {
                 await DisplayAlert("Error", "No puede haber ningún campo vacío.", "OK");
+                return;
             }
 
             var contraseñaEncriptada = EncriptarContraseña(contraseña);
@@ -218,54 +198,88 @@ namespace PuntoVenta.Pages
         }
 
         // Método para actualizar la información de un empleado
+        private bool _isUpdating = false;
+
         private async void OnActualizarInformacionClicked(object sender, EventArgs e)
         {
-            // Obtener los datos del Entry
-            var nombre = NombreEntry.Text;
-            var apellidos = ApellidosEntry.Text;
-            var usuario = UsuarioEntry.Text;
-            var contraseña = ContraseñaEntry.Text;
+            if (_isUpdating) return;
+            _isUpdating = true;
 
-            // Validar que no haya campos vacíos
-            if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(apellidos) || string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(contraseña))
+            try
             {
-                await DisplayAlert("Error", "Debes llenar todos los campos", "OK");
-                return;
-            }
-
-            // Encriptar la nueva contraseña
-            var contraseñaEncriptada = EncriptarContraseña(contraseña);
-
-            // Obtener el empleado seleccionado
-            if (empleadosListView.SelectedItem != null && empleadosListView.SelectedItem is Empleado empleadoSeleccionado)
-            {
-                // Actualizar el empleado en la base de datos
-                await ActualizarEmpleadoAsync(empleadoSeleccionado, nombre, apellidos, usuario, contraseñaEncriptada);
-
-                // Recargar la lista de empleados
-                _empleados.Clear();
-                var empleados = await ObtenerEmpleadosAsync();
-                foreach (var empleado in empleados)
+                // Verificar si la página está visible antes de continuar
+                if (!isPageVisible)
                 {
-                    _empleados.Add(empleado);
+                    await DisplayAlert("Error", "La página ya no está visible", "OK");
+                    return;
                 }
 
-                empleadosListView.ItemsSource = _empleados;
+                var nombre = NombreEntry?.Text;
+                var apellidos = ApellidosEntry?.Text;
+                var usuario = UsuarioEntry?.Text;
+                var contraseña = ContraseñaEntry?.Text;
 
-                //Deseleccionar elemento del listview
-                empleadosListView.SelectedItem = null;
+                // Validar que los campos no estén vacíos
+                if (string.IsNullOrEmpty(nombre) || string.IsNullOrEmpty(apellidos) || string.IsNullOrEmpty(usuario) || string.IsNullOrEmpty(contraseña))
+                {
+                    await DisplayAlert("Error", "Debes llenar todos los campos", "OK");
+                    return;
+                }
 
-                LimpiarCampos();
+                // Encriptar la nueva contraseña
+                var contraseñaEncriptada = EncriptarContraseña(contraseña);
 
-                // Ocultar el botón de actualización y mostrar el de agregar
-                AgregarEmpleadoBtn.IsVisible = true;
-                ActualizarInformacionBtn.IsVisible = false;
-                EliminarEmpleadoBtn.IsVisible = false;
-                CancelarBtn.IsVisible = false;
-
-                // Mostrar mensaje de éxito
-                await DisplayAlert("Éxito", "Empleado actualizado correctamente", "OK");
+                // Obtener el empleado seleccionado y actualizar la información
+                if (empleadosListView?.SelectedItem != null && empleadosListView.SelectedItem is Empleado empleadoSeleccionado)
+                {
+                    try
+                    {
+                        await ActualizarEmpleadoAsync(empleadoSeleccionado, nombre, apellidos, usuario, contraseñaEncriptada);
+                        await RecargarListaDeEmpleados();
+                    }
+                    catch (ObjectDisposedException)
+                    {
+                        await DisplayAlert("Error", "Ocurrió un error al acceder a un objeto eliminado.", "OK");
+                    }
+                    catch (Exception ex)
+                    {
+                        // Manejar cualquier error que pueda ocurrir
+                        await DisplayAlert("Error", "Ocurrió un error al actualizar la información: " + ex.Message, "OK");
+                    }
+                }
             }
+            finally
+            {
+                _isUpdating = false;
+            }
+        }
+
+        private async Task RecargarListaDeEmpleados()
+        {
+            var empleados = await ObtenerEmpleadosAsync();
+
+            Device.BeginInvokeOnMainThread(() =>
+            {
+                // Asegurarse de que la página y los elementos aún están visibles
+                if (isPageVisible && empleadosListView != null)
+                {
+                    _empleados.Clear();
+                    foreach (var empleado in empleados)
+                    {
+                        _empleados.Add(empleado);
+                    }
+                    empleadosListView.ItemsSource = _empleados;
+                    empleadosListView.SelectedItem = null;
+                    LimpiarCampos();
+
+                    AgregarEmpleadoBtn.IsVisible = true;
+                    ActualizarInformacionBtn.IsVisible = false;
+                    EliminarEmpleadoBtn.IsVisible = false;
+                    CancelarBtn.IsVisible = false;
+
+                    DisplayAlert("Éxito", "Empleado actualizado correctamente", "OK");
+                }
+            });
         }
 
         // Método para actualizar el empleado en la base de datos
